@@ -10,7 +10,7 @@ separate-locales: false
 finish-args:
   - '--share=ipc'
   - '--share=network'
-  - '--socket=x11'
+  - '--socket=fallback-x11'
   - '--socket=pulseaudio'
   - '--device=all'
   - '--filesystem=xdg-documents:ro'
@@ -42,13 +42,16 @@ modules:
       - type: script
         commands:
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - exec zypak-wrapper /app/extra/QQ/qq "$@"
+          - if [ -e $XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:=wayland-0} ]; then
+          -   wayland_opt="--ozone-platform-hint=auto"
+          - fi
+          - exec zypak-wrapper /app/extra/QQ/qq $wayland_opt "$@"
         dest-filename: qq.sh
 
       - type: script
         commands:
-          - ar x qq.deb
-          - tar -xf data.tar.xz
+          - ar x qq.deb $(ar t qq.deb|grep data)
+          - tar -xf data.*
           - mv opt/QQ .
           - mv usr export
           - rm -rf export/share/doc
@@ -57,7 +60,7 @@ modules:
           - FLATPAK_ID=com.qq.QQ
           - desktop-file-edit --set-icon="$FLATPAK_ID" --set-key="Exec" --set-value="qq %U" export/share/applications/*.desktop
           - rename "qq" "$FLATPAK_ID" export/share/icons/hicolor/*/apps/*.png export/share/applications/*.desktop
-          - rm -rf qq.deb opt usr control.tar.gz data.tar.xz debian-binary
+          - rm -rf qq.deb opt data.*
         dest-filename: apply_extra
       - type: file
         path: com.qq.QQ.metainfo.xml
