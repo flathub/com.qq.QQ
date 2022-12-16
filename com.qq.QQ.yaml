@@ -63,6 +63,7 @@ modules:
         path: com.qq.QQ.metainfo.xml
       - type: extra-data
         filename: qq.deb
+        only-arches: [x86_64]
         url: https://dldir1.qq.com/qqfile/qq/QQNT/4691a571/QQ-v2.0.1-429_x64.deb
         sha256: e3aa15ff6ae089b655df3913c6020ca56726bd676995aaf29b313fbd0643ea42
         size: 108719314
@@ -72,6 +73,12 @@ modules:
         #     url: https://im.qq.com/linuxqq/download.html
         #     version-pattern: '(\S*)'
         #     url-template: 'https://dldir1.qq.com/qqfile/qq/QQNT/4691a571/QQ-(\S*)_x64.deb'
+      - type: extra-data
+        filename: qq.deb
+        only-arches: [aarch64]
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/0186a650/QQ-v2.0.1-453_arm64.deb
+        sha256: 70c286006dae10da06c191b5f0718d17d686a8ef792f6f72215734773f01498b
+        size: 110810072
   - name: kerberos
     subdir: src
     sources:
