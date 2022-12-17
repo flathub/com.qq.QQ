@@ -35,6 +35,7 @@ modules:
       - install apply_extra ${FLATPAK_DEST}/bin
       - install -Dm755 qq.sh ${FLATPAK_DEST}/bin/qq
       - install -Dm644 com.qq.QQ.metainfo.xml $FLATPAK_DEST/share/metainfo/${FLATPAK_ID}.metainfo.xml
+      - install -Dm644 com.qq.QQ.png ${FLATPAK_DEST}/share/app-info/icons/flatpak/128x128/${FLATPAK_ID}.png
       - install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin
       - install -Dm755 /usr/bin/desktop-file-edit -t ${FLATPAK_DEST}/bin
       - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
@@ -64,6 +65,8 @@ modules:
         dest-filename: apply_extra
       - type: file
         path: com.qq.QQ.metainfo.xml
+      - type: file
+        path: com.qq.QQ.png
       - type: extra-data
         filename: qq.deb
         url: https://dldir1.qq.com/qqfile/qq/QQNT/4691a571/QQ-v2.0.1-429_x64.deb
