@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
+<component type="desktop-application">
   <id>com.qq.QQ</id>
   <name>Linux QQ</name>
   <project_license>LicenseRef-proprietary=https://rule.tencent.com/rule/preview/46a15f24-e42c-4cb6-a308-2347139b1201</project_license>
   <developer_name>Tencent</developer_name>
   <summary>Online instant messaging service</summary>
   <metadata_license>CC0-1.0</metadata_license>
+  <launchable type="desktop-id">com.qq.QQ.desktop</launchable>
   <url type="homepage">https://im.qq.com</url>
   <url type="help">https://kf.qq.com/product/QQ.html</url>
   <description>
