@@ -8,19 +8,16 @@ command: qq
 separate-locales: false
 
 finish-args:
-  - '--share=ipc'
-  - '--share=network'
-  - '--socket=fallback-x11'
-  - '--socket=pulseaudio'
-  - '--device=all'
-  - '--filesystem=xdg-documents:ro'
-  - '--filesystem=xdg-pictures:ro'
-  - '--filesystem=xdg-videos:ro'
-  - '--filesystem=xdg-download'
-  - '--talk-name=org.freedesktop.Notifications'
-  - '--talk-name=org.kde.StatusNotifierWatcher'
-  - '--system-talk-name=org.freedesktop.login1'
-  - '--filesystem=xdg-run/pipewire-0'
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=all
+  - --filesystem=xdg-download
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --system-talk-name=org.freedesktop.login1
+  - --filesystem=xdg-run/pipewire-0
 
 cleanup:
   - /include
@@ -29,22 +26,30 @@ cleanup:
   - '*.la'
 
 modules:
+  - name: kerberos
+    subdir: src
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.20/krb5-1.20.tar.gz
+        sha256: 7e022bdd3c851830173f9faaa006a230a0e0fdad4c953e85bff4bf0da036e12f
+
   - name: qq
     buildsystem: simple
     build-commands:
-      - install apply_extra ${FLATPAK_DEST}/bin
-      - install -Dm755 qq.sh ${FLATPAK_DEST}/bin/qq
-      - install -Dm644 com.qq.QQ.metainfo.xml $FLATPAK_DEST/share/metainfo/${FLATPAK_ID}.metainfo.xml
-      - install -Dm644 com.qq.QQ.png ${FLATPAK_DEST}/share/app-info/icons/flatpak/128x128/${FLATPAK_ID}.png
-      - install -Dm755 /usr/bin/ar -t ${FLATPAK_DEST}/bin
-      - install -Dm755 /usr/bin/desktop-file-edit -t ${FLATPAK_DEST}/bin
-      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t ${FLATPAK_DEST}/lib
+      - install apply_extra $FLATPAK_DEST/bin
+      - install -Dm755 qq.sh $FLATPAK_DEST/bin/qq
+      - install -Dm644 com.qq.QQ.metainfo.xml -t $FLATPAK_DEST/share/metainfo
+      - install -Dm644 com.qq.QQ.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
+      - install -Dm644 com.qq.QQ.desktop -t $FLATPAK_DEST/share/applications
+
+      - install -Dm755 /usr/bin/ar -t $FLATPAK_DEST/bin
+      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t $FLATPAK_DEST/lib
     sources:
       - type: script
         commands:
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
           - if [ -e $XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:=wayland-0} ]; then
-          -   wayland_opt="--ozone-platform-hint=auto"
+          - wayland_opt="--ozone-platform-hint=auto"
           - fi
           - exec zypak-wrapper /app/extra/QQ/qq $wayland_opt "$@"
         dest-filename: qq.sh
@@ -54,40 +59,36 @@ modules:
           - ar x qq.deb $(ar t qq.deb|grep data)
           - tar -xf data.*
           - mv opt/QQ .
-          - mv usr export
-          - rm -rf export/share/doc
-          - rm -rf export/share/icons
-          - install -Dm644 QQ/resources/app/512x512.png export/share/icons/hicolor/512x512/apps/qq.png
-          - FLATPAK_ID=com.qq.QQ
-          - desktop-file-edit --set-icon="$FLATPAK_ID" --set-key="Exec" --set-value="qq %U" export/share/applications/*.desktop
-          - rename "qq" "$FLATPAK_ID" export/share/icons/hicolor/*/apps/*.png export/share/applications/*.desktop
-          - rm -rf qq.deb opt data.*
+          - rm -rf qq.deb usr opt data.*
         dest-filename: apply_extra
+
       - type: file
         path: com.qq.QQ.metainfo.xml
+
       - type: file
         path: com.qq.QQ.png
+
+      - type: file
+        path: com.qq.QQ.desktop
+
+
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/4691a571/QQ-v2.0.1-429_x64.deb
-        sha256: e3aa15ff6ae089b655df3913c6020ca56726bd676995aaf29b313fbd0643ea42
-        size: 108719314
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/50eed662/QQ-v2.0.3-543_x64.deb
+        sha256: 3bccda547b7fa17b1eacf5477bfafaa4016958578b0d5b2269ace0697ee4c6ef
+        size: 108794866
         # Will enable when available
         # x-checker-data:
         #     type: html
         #     url: https://im.qq.com/linuxqq/download.html
         #     version-pattern: '(\S*)'
         #     url-template: 'https://dldir1.qq.com/qqfile/qq/QQNT/4691a571/QQ-(\S*)_x64.deb'
+
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/0186a650/QQ-v2.0.1-453_arm64.deb
-        sha256: 70c286006dae10da06c191b5f0718d17d686a8ef792f6f72215734773f01498b
-        size: 110810072
-  - name: kerberos
-    subdir: src
-    sources:
-      - type: archive
-        url: https://kerberos.org/dist/krb5/1.20/krb5-1.20.tar.gz
-        sha256: 7e022bdd3c851830173f9faaa006a230a0e0fdad4c953e85bff4bf0da036e12f
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/50eed662/QQ-v2.0.3-543_arm64.deb
+        sha256: d356697284837396f430228032ad7a378717cdba2e1cd724386b2ff99e1eb7bc
+        size: 111076408
+
