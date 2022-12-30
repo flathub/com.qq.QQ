@@ -11,7 +11,6 @@
   <url type="help">https://kf.qq.com/product/QQ.html</url>
   <description>
     <p>Tencent QQ (Chinese: 腾讯QQ), also known as QQ, is an instant messaging software service and web portal developed by the Chinese technology company Tencent.</p>
-    <p>This version of QQ is still in early stage, you may encounter webview crash, please be patient.</p>
     <p>NOTE: This wrapper is not verified by, affiliated with, or supported by Tencent.</p>
   </description>
   <screenshots>
