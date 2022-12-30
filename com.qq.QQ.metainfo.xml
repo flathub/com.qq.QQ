@@ -14,12 +14,15 @@
     <p>This version of QQ is still in early stage, you may encounter webview crash, please be patient.</p>
     <p>NOTE: This wrapper is not verified by, affiliated with, or supported by Tencent.</p>
   </description>
-  <description xml:lang="zh-cn">
-    <p>腾讯QQ是深圳市腾讯计算机股份有限公司于1999年2月11日推出的一款的多平台即时通信软件，支持文字、语音和视频聊天，以及文件共享、网络硬盘、邮箱、游戏、论坛、网购、租房与找工作等服务。</p>
-  </description>
   <screenshots>
     <screenshot type="default">
-      <image type="source">https://sqimg.qq.com/mapp/im_qq_com/pc-feture.png</image>
+      <image type="source">https://static-res.qq.com/static-res/linuxqq/P1.png</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://static-res.qq.com/static-res/linuxqq/P3.png</image>
+    </screenshot>
+    <screenshot>
+      <image type="source">https://static-res.qq.com/static-res/linuxqq/P4.png</image>
     </screenshot>
   </screenshots>
   <categories>
