@@ -29,6 +29,7 @@
     <category>Network</category>
   </categories>
   <releases>
+    <release version="3.0.0-571" date="2022-12-30"/>
     <release version="2.0.1" date="2022-12-08"/>
   </releases>
   <content_rating type="oars-1.1">
