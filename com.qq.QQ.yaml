@@ -1,9 +1,9 @@
 app-id: com.qq.QQ
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
-base-version: '21.08'
+base-version: '22.08'
 command: qq
 separate-locales: false
 
@@ -32,6 +32,26 @@ modules:
       - type: archive
         url: https://kerberos.org/dist/krb5/1.20/krb5-1.20.tar.gz
         sha256: 7e022bdd3c851830173f9faaa006a230a0e0fdad4c953e85bff4bf0da036e12f
+  
+  # runtime cups is built aginst openssl
+  # need cups with gnutls for qq to load gnutls func
+  - name: cups
+    config-opts:
+      - --with-components=all
+      - --with-dbusdir=/etc/dbus-1
+      - --with-systemd
+      - --with-tls=gnutls
+      - --with-cups-group=lp
+      - --with-system-groups=wheel
+      - --with-rundir=/run/cups
+      - localedir=/usr/share/locale
+    no-make-install: true
+    post-install:
+      - install -Dm755 cups/libcups.so $FLATPAK_DEST/lib/libcups.so.2
+    sources:
+      - type: git
+        url: https://github.com/OpenPrinting/cups.git
+        tag: v2.4.2
 
   - name: qq
     buildsystem: simple
@@ -41,9 +61,6 @@ modules:
       - install -Dm644 com.qq.QQ.metainfo.xml -t $FLATPAK_DEST/share/metainfo
       - install -Dm644 com.qq.QQ.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
       - install -Dm644 com.qq.QQ.desktop -t $FLATPAK_DEST/share/applications
-
-      - install -Dm755 /usr/bin/ar -t $FLATPAK_DEST/bin
-      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t $FLATPAK_DEST/lib
     sources:
       - type: script
         commands:
@@ -56,8 +73,7 @@ modules:
 
       - type: script
         commands:
-          - ar x qq.deb $(ar t qq.deb|grep data)
-          - tar -xf data.*
+          - bsdtar --to-stdout -xf qq.deb data.* | bsdtar -xf -
           - mv opt/QQ .
           - rm -rf qq.deb usr opt data.*
         dest-filename: apply_extra
