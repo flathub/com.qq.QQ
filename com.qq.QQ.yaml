@@ -1,7 +1,7 @@
 app-id: com.qq.QQ
-runtime: org.freedesktop.Platform
-runtime-version: '22.08'
-sdk: org.freedesktop.Sdk
+runtime: org.gnome.Platform
+runtime-version: '43'
+sdk: org.gnome.Sdk
 base: org.electronjs.Electron2.BaseApp
 base-version: '22.08'
 command: qq
@@ -14,10 +14,12 @@ finish-args:
   - --socket=pulseaudio
   - --device=all
   - --filesystem=xdg-download
+  - --talk-name=org.gnome.Shell.Screencast
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
+  - --filesystem=/tmp
 
 cleanup:
   - /include
