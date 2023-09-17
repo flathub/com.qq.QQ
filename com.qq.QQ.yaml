@@ -51,9 +51,9 @@ modules:
     post-install:
       - install -Dm755 cups/libcups.so $FLATPAK_DEST/lib/libcups.so.2
     sources:
-      - type: git
-        url: https://github.com/OpenPrinting/cups.git
-        tag: v2.4.2
+      - type: archive
+        url: https://github.com/OpenPrinting/cups/archive/refs/tags/v2.4.2.zip
+        sha256: fe76012ff2f715c1bad38c1e9dc6dbc736850499bf2783efaa4b6ff4eb50d020
 
   - name: qq
     buildsystem: simple
@@ -117,14 +117,15 @@ modules:
   - name: noto-fonts
     buildsystem: simple
     build-commands:
-      - mkdir -p /app/share/
-      - mkdir -p /app/share/fontconfig
-      - install -Dm644 Sans/OTC/*.ttc -t /app/share/fonts/
-      - install -Dm644 70-noto-cjk.conf /app/share/fontconfig/fonts.conf
+      - install -Dm644 SimplifiedChinese/*.otf -t /app/share/fonts/
+      - install -Dm644 noto-fontconfig.conf /app/etc/fonts/local.conf
     sources:
       - type: archive
-        url: https://github.com/notofonts/noto-cjk/archive/4efc595762d1f4b4fa504bccfe8e59de91fda063.zip
-        sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
+        # path: ./09_NotoSerifCJKsc.zip
+        url: https://github.com/notofonts/noto-cjk/releases/download/Serif2.002/09_NotoSerifCJKsc.zip
+        sha256: eeede72f5b88655a3630f18661155028578afc88aa9e67e55db45a8b5be46789
+      # - type: file
+      #   url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
+      #   sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
       - type: file
-        url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
-        sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
+        path: ./noto-fontconfig.conf
