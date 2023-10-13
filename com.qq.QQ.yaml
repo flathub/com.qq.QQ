@@ -68,10 +68,7 @@ modules:
       - type: script
         commands:
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - if [ -e $XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:=wayland-0} ]; then
-          - wayland_opt="--ozone-platform-hint=auto --enable-wayland-ime"
-          - fi
-          - exec zypak-wrapper /app/extra/QQ/qq $wayland_opt "$@"
+          - exec zypak-wrapper /app/extra/QQ/qq "$@"
         dest-filename: qq.sh
 
       - type: script
