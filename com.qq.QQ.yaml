@@ -20,7 +20,7 @@ finish-args:
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=/tmp
-
+ 
 cleanup:
   - /include
   - /lib/pkgconfig
@@ -55,6 +55,16 @@ modules:
         url: https://github.com/OpenPrinting/cups.git
         tag: v2.4.2
 
+  - name: librename
+    buildsystem: simple
+    build-commands:
+      - mkdir -p $FLATPAK_DEST/etc/preload
+      - gcc -shared -o rename.so -fPIC rename.c -ldl
+      - install -Dm755 ./rename.so -t $FLATPAK_DEST/etc/preload/
+    sources: 
+      - type: file
+        path: etc/rename.c
+    
   - name: qq
     buildsystem: simple
     build-commands:
@@ -65,7 +75,8 @@ modules:
       - install -Dm644 com.qq.QQ.desktop -t $FLATPAK_DEST/share/applications
     sources:
       - type: script
-        commands:
+        commands: 
+          - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
           - exec zypak-wrapper /app/extra/QQ/qq "$@"
         dest-filename: qq.sh
@@ -121,4 +132,4 @@ modules:
         url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
         sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
       - type: file
-        path: local.conf
+        path: etc/local.conf
