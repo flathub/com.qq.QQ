@@ -3,7 +3,7 @@ runtime: org.gnome.Platform
 runtime-version: '45'
 sdk: org.gnome.Sdk
 base: org.electronjs.Electron2.BaseApp
-base-version: '23.08'
+base-version: '22.08'
 command: qq
 separate-locales: false
 
@@ -64,12 +64,6 @@ modules:
     sources: 
       - type: file
         path: patch/rename.cpp
-
-  - name: zypak
-    sources:
-    - type: git
-      url: https://github.com/refi64/zypak
-      tag: v2023.02beta.1
     
   - name: qq
     buildsystem: simple

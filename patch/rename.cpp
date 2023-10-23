@@ -28,7 +28,7 @@ extern "C" int rename(const char* oldpath, const char* newpath) {
 
     if (!original_rename) {
         std::cerr << "Error: dlsym couldn't find original rename function." << std::endl;
-        return -1; // 返回错误码
+        return -1;
     }
 
     int result = original_rename(oldpath, newpath);
@@ -37,16 +37,16 @@ extern "C" int rename(const char* oldpath, const char* newpath) {
 
         fs::path old_path(oldpath);
         if (fs::is_directory(old_path)) {
-            return 1; // 如果是文件夹，返回1
+            return result;
         }
 
         try {
             fs::copy(old_path, newpath, fs::copy_options::update_existing);
             fs::remove(old_path);
-            return 0; // 返回0表示成功
+            return 0; 
         } catch (const std::exception& e) {
-            std::cerr << "Error copying file: " << e.what() << std::endl;
-            return -1; // 返回错误码
+            std::cerr << "Error moving file: " << e.what() << std::endl;
+            return -1; 
         }
 
     }
