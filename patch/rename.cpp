@@ -24,29 +24,38 @@ namespace fs = std::filesystem;
 static int (*original_rename)(const char*, const char*) = 
     (int(*)(const char*, const char*))dlsym(RTLD_NEXT, "rename");
 
-extern "C" int rename(const char* oldpath, const char* newpath) {
+extern "C" int rename(const char* from, const char* to) {
 
     if (!original_rename) {
         std::cerr << "Error: dlsym couldn't find original rename function." << std::endl;
         return -1;
     }
 
-    int result = original_rename(oldpath, newpath);
+    int result = original_rename(from, to);
 
     if (result == -1 && errno == EXDEV) {
 
-        fs::path old_path(oldpath);
-        if (fs::is_directory(old_path)) {
-            return result;
+        fs::path from_path(from);
+        fs::path to_path(to);
+
+        if (fs::is_directory(from_path)) {
+            return result;                                    // we don't handle the situation where from is dir
+        }
+        std::error_code ec;
+        fs::copy_options options = fs::copy_options::update_existing;
+
+        fs::copy(from_path, to_path, options, ec);
+
+        if (ec) {
+            std::cerr << "ERCF:" << ec.message() << std::endl; // ERCF means error copy file
+            return -1; 
         }
 
-        try {
-            fs::copy(old_path, newpath, fs::copy_options::update_existing);
-            fs::remove(old_path);
-            return 0; 
-        } catch (const std::exception& e) {
-            std::cerr << "Error moving file: " << e.what() << std::endl;
-            return -1; 
+        fs::remove(from_path, ec);
+
+        if (ec) {
+            std::cerr << "ERRF:" << ec.message() << std::endl; // EROF means error remove file
+            return -1; // Return an error code for old file removal failure.
         }
 
     }
