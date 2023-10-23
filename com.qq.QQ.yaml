@@ -59,11 +59,11 @@ modules:
     buildsystem: simple
     build-commands:
       - mkdir -p $FLATPAK_DEST/etc/preload
-      - gcc -shared -o rename.so -fPIC rename.c -ldl
+      - g++ -shared -fPIC -o rename.so rename.cpp -ldl
       - install -Dm755 ./rename.so -t $FLATPAK_DEST/etc/preload/
     sources: 
       - type: file
-        path: patch/rename.c
+        path: patch/rename.cpp
     
   - name: qq
     buildsystem: simple
