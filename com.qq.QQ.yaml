@@ -64,6 +64,12 @@ modules:
     sources: 
       - type: file
         path: patch/rename.cpp
+
+  - name: zypak
+    sources:
+    - type: git
+      url: https://github.com/refi64/zypak
+      tag: v2023.02beta.1
     
   - name: qq
     buildsystem: simple
