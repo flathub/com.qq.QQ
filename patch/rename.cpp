@@ -38,13 +38,20 @@ extern "C" int rename(const char* from, const char* to) {
         fs::path from_path(from);
         fs::path to_path(to);
 
+        if(!std::filesystem::exists(from_path) && 
+            std::filesystem::exists(to_path) ) {
+            return 1;                                         // if qq call rename() fails, it tends to call mutiple
+        }                                                    // times, so if the file is already copied just return.
+
         if (fs::is_directory(from_path)) {
             return result;                                    // we don't handle the situation where from is dir
         }
+        
         std::error_code ec;
         fs::copy_options options = fs::copy_options::update_existing;
 
         fs::copy(from_path, to_path, options, ec);
+
 
         if (ec) {
             std::cerr << "ERCF:" << ec.message() << std::endl; // ERCF means error copy file
