@@ -13,7 +13,7 @@ mount points because its implementation relies on hard link. Therefore, we need 
 compile it as a dynamic library, and inject it into QQ using LD_PRELOAD.
 
 */
-
+#define _GNU_SOURCE
 #include <iostream>
 #include <dlfcn.h>
 #include <errno.h>
