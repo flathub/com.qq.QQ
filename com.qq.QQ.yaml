@@ -54,6 +54,10 @@ modules:
       - type: git
         url: https://github.com/OpenPrinting/cups.git
         tag: v2.4.7
+        commit: 3a4d9204e5818e5d0b8f1e0e50832661209048ee
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\d.]+)$
 
   - name: librename
     buildsystem: simple
@@ -120,6 +124,7 @@ modules:
           type: html
           url: https://im.qq.com/rainbow/linuxQQDownload
           pattern: (https://[^"]+/linuxqq_([\d\.\-]+)_arm64.deb)
+          
   - name: fontconfig
     buildsystem: simple
     build-commands:
