@@ -28,13 +28,6 @@ cleanup:
   - '*.la'
 
 modules:
-  - name: kerberos
-    subdir: src
-    sources:
-      - type: archive
-        url: https://kerberos.org/dist/krb5/1.20/krb5-1.20.tar.gz
-        sha256: 7e022bdd3c851830173f9faaa006a230a0e0fdad4c953e85bff4bf0da036e12f
-
   # runtime cups is built aginst openssl
   # need cups with gnutls for qq to load gnutls func
   - name: cups
@@ -53,7 +46,11 @@ modules:
     sources:
       - type: git
         url: https://github.com/OpenPrinting/cups.git
-        tag: v2.4.2
+        tag: v2.4.7
+        commit: 3a4d9204e5818e5d0b8f1e0e50832661209048ee
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\d.]+)$
 
   - name: librename
     buildsystem: simple
@@ -64,6 +61,20 @@ modules:
     sources:
       - type: file
         path: patch/rename.cpp
+
+  - name: fontconfig
+    buildsystem: simple
+    build-commands:
+      - install -pDm644 "local.conf" -t "/app/etc/fonts/";
+      - install -pDm644 "70-noto-cjk.conf" -t "/app/etc/fonts/conf.d/";
+      # `||:` return a successful exit status
+      - fc-cache -fsv ||:;
+    sources:
+      - type: file
+        url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
+        sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
+      - type: file
+        path: patch/local.conf
 
   - name: qq
     buildsystem: simple
@@ -97,13 +108,12 @@ modules:
       - type: file
         path: com.qq.QQ.desktop
 
-
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/fd2e886e/linuxqq_3.2.2-18394_amd64.deb
-        sha256: 2f533c3b417354a2d734d60618c3dfd4d6e1fc31712c70656f36a9afbbb3e529
-        size: 128801376
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/e50c983e/linuxqq_3.2.3-18968_amd64.deb
+        sha256: 7a2769d6fba4d8c9669616aea987184c5d64b21be21f072185b2c48eb53769fe
+        size: 128095612
         x-checker-data:
           type: html
           url: https://im.qq.com/rainbow/linuxQQDownload
@@ -113,23 +123,10 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/fd2e886e/linuxqq_3.2.2-18394_arm64.deb
-        sha256: e84de1ed9e3ddfa60a65bf86d05a0c6fdd13dc4cc7f33d3b9a618c9cbe120c59
-        size: 133857732
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/e50c983e/linuxqq_3.2.3-18968_amd64.deb
+        sha256: 0594cdeeb910515c96a5868751bf14c0879be97fd4c7c15b94501ec4607e4200
+        size: 132673252
         x-checker-data:
           type: html
           url: https://im.qq.com/rainbow/linuxQQDownload
           pattern: (https://[^"]+/linuxqq_([\d\.\-]+)_arm64.deb)
-  - name: fontconfig
-    buildsystem: simple
-    build-commands:
-      - install -pDm644 "local.conf" -t "/app/etc/fonts/";
-      - install -pDm644 "70-noto-cjk.conf" -t "/app/etc/fonts/conf.d/";
-      # `||:` return a successful exit status
-      - fc-cache -fsv ||:;
-    sources:
-      - type: file
-        url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
-        sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
-      - type: file
-        path: patch/local.conf
