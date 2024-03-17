@@ -13,10 +13,12 @@ finish-args:
   - --socket=x11
   - --socket=pulseaudio
   - --device=all
-  # Screenshot(optional)
+  # Screenshot
   # - --talk-name=org.gnome.Shell.Screencast
   # - --talk-name=org.kde.kwin.Screenshot
   # - --filesystem=/tmp
+  # Files
+  # - --filesystem=xdg-download
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
   - --system-talk-name=org.freedesktop.login1
