@@ -12,17 +12,16 @@ finish-args:
   - --share=network
   - --socket=x11
   - --socket=pulseaudio
-  - --device=all
+  - --device=dri 
   # Screenshot
-  # - --talk-name=org.gnome.Shell.Screencast
-  # - --talk-name=org.kde.kwin.Screenshot
+  - --talk-name=org.gnome.Shell.Screencast
+  - --talk-name=org.kde.kwin.Screenshot
   # - --filesystem=/tmp
   # Files
-  # - --filesystem=xdg-download
+  # - --filesystem=xdg-download 
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
   - --system-talk-name=org.freedesktop.login1
-  - --filesystem=xdg-run/pipewire-0
 
 cleanup:
   - /include
