@@ -111,8 +111,8 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.5_240305_amd64_01.deb
-        sha256: c7f394d36a196082b2e29a3fd9bb982a448b682de891f4018c5f62b3d9d609ec
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/e619e933/linuxqq_3.2.6-22165_amd64.deb
+        sha256: 97d24eec8cedb30406528f773b43ddd9c5f7f74be55525ca1da7f9676691e458
         size: 131853826
         x-checker-data:
           type: html
@@ -123,8 +123,8 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.5_240305_arm64_01.deb
-        sha256: bf6587582830ebf39619d9341c0c489559e39ddb268553e87666a38de4c84813
+        url: https://dldir1.qq.com/qqfile/qq/QQNT/e619e933/linuxqq_3.2.6-22165_arm64.deb
+        sha256: f5c7fbda088baeaa5473aaedd9e77201f054fb40574833a0f9ed31328b7ec802
         size: 136690288
         x-checker-data:
           type: html
