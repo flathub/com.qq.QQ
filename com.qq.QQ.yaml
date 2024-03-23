@@ -113,7 +113,8 @@ modules:
         only-arches: [x86_64]
         url: https://dldir1.qq.com/qqfile/qq/QQNT/e619e933/linuxqq_3.2.6-22165_amd64.deb
         sha256: 97d24eec8cedb30406528f773b43ddd9c5f7f74be55525ca1da7f9676691e458
-        size: 131853826
+        size: 131174416
+
         x-checker-data:
           type: html
           url: https://im.qq.com/rainbow/linuxQQDownload
@@ -125,7 +126,7 @@ modules:
         only-arches: [aarch64]
         url: https://dldir1.qq.com/qqfile/qq/QQNT/e619e933/linuxqq_3.2.6-22165_arm64.deb
         sha256: f5c7fbda088baeaa5473aaedd9e77201f054fb40574833a0f9ed31328b7ec802
-        size: 136690288
+        size: 128903132
         x-checker-data:
           type: html
           url: https://im.qq.com/rainbow/linuxQQDownload
