@@ -28,6 +28,19 @@ cleanup:
   - '*.la'
 
 modules:
+  # electron baseapp 23.08 libnotify caused crash, use 22.08 libnotify
+  - name: libnotify
+    buildsystem: meson
+    config-opts:
+      - -Dtests=false
+      - -Dintrospection=disabled
+      - -Dgtk_doc=false
+      - -Ddocbook_docs=disabled
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.8.tar.xz
+        sha256: 69209e0b663776a00c7b6c0e560302a8dbf66b2551d55616304f240bba66e18c
+
   # runtime cups is built aginst openssl
   # need cups with gnutls for qq to load gnutls func
   - name: cups
