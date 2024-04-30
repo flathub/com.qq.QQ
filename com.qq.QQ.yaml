@@ -102,17 +102,11 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
+          - WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
           - |
-            FLAGS='--enable-features=UseSkiaRenderer,WaylandWindowDecorations'
-
-            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:=wayland-0}" ]]
+            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" ]]
             then
-                FLAGS="$FLAGS --ozone-platform-hint=auto --enable-wayland-ime"
-            fi
-
-            if [[ $XDG_SESSION_TYPE == "wayland" ]] && [ -c /dev/nvidia0 ]
-            then
-                FLAGS="$FLAGS --disable-gpu-sandbox"
+                FLAGS="--enable-features=WaylandWindowDecorations --ozone-platform-hint=auto --enable-wayland-ime"
             fi
           - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
