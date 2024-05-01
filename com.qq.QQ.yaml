@@ -20,6 +20,8 @@ finish-args:
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=/tmp
+  # required to fix cursor scaling on wayland
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 
 cleanup:
   - /include
