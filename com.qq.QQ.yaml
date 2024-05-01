@@ -20,6 +20,8 @@ finish-args:
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=/tmp
+  # required to fix cursor scaling on wayland
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 
 cleanup:
   - /include
@@ -102,7 +104,13 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - exec zypak-wrapper /app/extra/QQ/qq "$@"
+          - WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
+          - |
+            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" ]]
+            then
+                FLAGS="--enable-features=WaylandWindowDecorations --ozone-platform-hint=auto --enable-wayland-ime"
+            fi
+          - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
 
       - type: script
