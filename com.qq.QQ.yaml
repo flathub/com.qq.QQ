@@ -61,8 +61,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/OpenPrinting/cups.git
-        tag: v2.4.8
-        commit: e64a8085f3d3bcd4178ee3c7c135f3bbb3b1c289
+        tag: v2.4.9
+        commit: a2bd523c63823f061d20e437258ed22a70b4df39
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+)$
