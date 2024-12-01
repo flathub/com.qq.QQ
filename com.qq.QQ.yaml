@@ -14,7 +14,6 @@ finish-args:
   - --socket=pulseaudio
   - --device=all
   - --filesystem=xdg-download
-  - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
