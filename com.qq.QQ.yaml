@@ -18,6 +18,7 @@ finish-args:
   - --socket=pulseaudio
 
   # Filesystems
+  - --filesystem=xdg-config/QQ
   - --filesystem=xdg-download
   - --filesystem=xdg-run/pipewire-0
 
