@@ -29,8 +29,11 @@
     <category>Network</category>
   </categories>
   <releases>
-    <release version="3.2.17_250423" date="2025-04-23">
+    <release version="3.2.17_250429" date="2025-04-29">
       <description></description>
+    </release>
+    <release version="3.2.17_250423" date="2025-04-23">
+      <description/>
     </release>
     <release version="3.2.16_250401" date="2025-04-01">
       <description/>
