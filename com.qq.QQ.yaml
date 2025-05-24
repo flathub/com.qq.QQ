@@ -28,9 +28,6 @@ finish-args:
   - --talk-name=org.freedesktop.ScreenSaver
   - --talk-name=org.kde.StatusNotifierWatcher
 
-  # System D-Bus Access
-  - --system-talk-name=org.freedesktop.login1
-
 cleanup:
   - /include
   - /lib/pkgconfig
