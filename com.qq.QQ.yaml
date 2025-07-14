@@ -139,7 +139,7 @@ modules:
         size: 150677032
         x-checker-data:
           type: html
-          url: https://im.qq.com/rainbow/linuxQQDownload
+          url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
           pattern: (https?://(?:[A-Za-z0-9-]+\.)*qq\.com/qqfile/qq/QQNT/Linux/QQ_([\d\._]+)_amd64[^/d]*\.deb)
           is-main-source: true
 
@@ -151,5 +151,5 @@ modules:
         size: 166112936
         x-checker-data:
           type: html
-          url: https://im.qq.com/rainbow/linuxQQDownload
+          url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
           pattern: (https?://(?:[A-Za-z0-9-]+\.)*qq\.com/qqfile/qq/QQNT/Linux/QQ_([\d\._]+)_arm64[^/d]*\.deb)
