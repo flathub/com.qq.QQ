@@ -1,9 +1,9 @@
 app-id: com.qq.QQ
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
-base-version: '24.08'
+base-version: '25.08'
 command: qq
 separate-locales: false
 
@@ -66,8 +66,8 @@ modules:
     subdir: src
     sources:
       - type: archive
-        url: https://kerberos.org/dist/krb5/1.21/krb5-1.21.tar.gz
-        sha256: 69f8aaff85484832df67a4bbacd99b9259bd95aab8c651fbbe65cdc9620ea93b
+        url: https://kerberos.org/dist/krb5/1.22/krb5-1.22.1.tar.gz
+        sha256: 1a8832b8cad923ebbf1394f67e2efcf41e3a49f460285a66e35adec8fa0053af
 
   - name: librename
     buildsystem: simple
@@ -144,7 +144,7 @@ modules:
         x-checker-data:
           type: html
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
-          pattern: (https:\/\/[a-z0-9]+\.qq\.com\/qqfile\/qq\/QQNT\/Linux\/QQ_[0-9\.]+_[0-9]+_amd64_[0-9]+\.deb)
+          pattern: (https:\/\/[a-z0-9]+\.qq\.com\/qqfile\/qq\/QQNT\/Linux\/QQ_([0-9\.]+_[0-9]+)_amd64_[0-9]+\.deb)
           is-main-source: true
 
       - type: extra-data
@@ -156,4 +156,4 @@ modules:
         x-checker-data:
           type: html
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
-          pattern: (https:\/\/[a-z0-9]+\.qq\.com\/qqfile\/qq\/QQNT\/Linux\/QQ_[0-9\.]+_[0-9]+_arm64_[0-9]+\.deb)
+          pattern: (https:\/\/[a-z0-9]+\.qq\.com\/qqfile\/qq\/QQNT\/Linux\/QQ_([0-9\.]+_[0-9]+)_arm64_[0-9]+\.deb)
