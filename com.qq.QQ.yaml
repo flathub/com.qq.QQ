@@ -111,6 +111,10 @@ modules:
             if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
             then
               FLAGS="--ozone-platform-hint=auto --enable-wayland-ime"
+              case "${XDG_CURRENT_DESKTOP}" in
+                "KDE" | "Hyprland") ;;
+                *) FLAGS+=" --wayland-text-input-version=3" ;;
+              esac
             fi
           - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
