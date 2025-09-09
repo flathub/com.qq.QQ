@@ -126,17 +126,26 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
+          - WAYLAND_SOCKET=${WAYLAND_DISPLAY:="wayland-0"}
+          - declare -a FLAGS
+          - |
+            if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
+            then
+              echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
+              readarray FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
+            fi
           - |
             if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
             then
-              FLAGS="--ozone-platform-hint=auto --enable-wayland-ime"
+              echo "Adding wayland related flags..."
+              FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime)
               case "${XDG_CURRENT_DESKTOP}" in
                 "KDE" | "Hyprland") ;;
-                *) FLAGS+=" --wayland-text-input-version=3" ;;
+                *) FLAGS+=(--wayland-text-input-version=3) ;;
               esac
             fi
-          - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
+          - echo "Pass \`${FLAGS[*]}\` to main process..."
+          - exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
         dest-filename: qq.sh
 
       - type: script
