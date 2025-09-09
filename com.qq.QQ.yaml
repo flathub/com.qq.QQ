@@ -132,7 +132,7 @@ modules:
             if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
             then
               echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
-              readarray FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
+              readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
             fi
           - |
             if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
