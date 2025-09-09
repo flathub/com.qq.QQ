@@ -102,9 +102,18 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          # X11（Electron）
-          - FLAGS="--ozone-platform=x11"
-          - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
+          - declare -a FLAGS
+          - |
+            if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
+            then
+              echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
+              readarray FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
+            else
+              echo "Adding X11 related flags..."
+              FLAGS+=(--ozone-platform=x11)
+            fi
+          - echo "Pass \`${FLAGS[*]}\` to main process..."
+          - exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
         dest-filename: qq.sh
 
       - type: script
