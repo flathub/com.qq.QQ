@@ -110,15 +110,13 @@ modules:
           - |
             if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
             then
-              echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
+              echo "User defined flags found, reading from $XDG_CONFIG_HOME/qq-flags.conf only."
               readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
-            fi
-          - |
             # $WAYLAND_DISPLAY maybe the absolute path to socket or `wayland-0` by default.
             # See also: https://wayland.freedesktop.org/docs/html/ch04.html#sect-Protocol-Wire-Format
-            if [[ -S "$WAYLAND_DISPLAY" ]] || [[ -S "$XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:-"wayland-0"}" ]]
+            elif [[ -S "$WAYLAND_DISPLAY" ]] || [[ -S "$XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:-"wayland-0"}" ]]
             then
-              echo "Adding wayland related flags..."
+              echo "No user defined flags found and we are using wayland, adding basic wayland related flags..."
               FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime)
               case "${XDG_CURRENT_DESKTOP}" in
                 "KDE" | "Hyprland") ;;
