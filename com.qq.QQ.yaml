@@ -107,7 +107,7 @@ modules:
             if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
             then
               echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
-              readarray FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
+              readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
             else
               echo "Adding X11 related flags..."
               FLAGS+=(--ozone-platform=x11)
