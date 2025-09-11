@@ -131,13 +131,11 @@ modules:
           - |
             if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
             then
-              echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
+              echo "User defined flags found, reading from $XDG_CONFIG_HOME/qq-flags.conf only."
               readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
-            fi
-          - |
-            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
+            elif [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
             then
-              echo "Adding wayland related flags..."
+              echo "No user defined flags found and we are using wayland, adding basic wayland related flags..."
               FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime)
               case "${XDG_CURRENT_DESKTOP}" in
                 "KDE" | "Hyprland") ;;
