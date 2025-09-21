@@ -22,6 +22,7 @@ finish-args:
 
   # required to fix cursor scaling on wayland
   - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+  - --env=ZYPAK_LD_PRELOAD=
 
   # D-Bus Access
   - --talk-name=org.freedesktop.Notifications
@@ -104,17 +105,28 @@ modules:
     sources:
       - type: script
         commands:
-          - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
+          - |
+            if [[ "${QQ_ENABLE_RENAME}" == "1" ]]; then
+              export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
+            else
+              export ZYPAK_LD_PRELOAD=
+            fi
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
           - WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
           - |
-            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
-            then
-              FLAGS="--ozone-platform-hint=auto --enable-wayland-ime"
-              case "${XDG_CURRENT_DESKTOP}" in
-                "KDE" | "Hyprland") ;;
-                *) FLAGS+=" --wayland-text-input-version=3" ;;
-              esac
+            FLAGS=""
+            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -n "${WAYLAND_DISPLAY}" ]]; then
+              FLAGS+=" --ozone-platform=wayland --enable-wayland-ime --enable-features=WaylandWindowDecorations"
+            else
+              FLAGS+=" --ozone-platform=x11"
+            fi
+          - |
+            if [[ "${QQ_DISABLE_GPU}" == "1" ]]; then
+              FLAGS+=" --disable-gpu --use-gl=swiftshader --disable-features=VaapiVideoDecoder,VaapiVideoEncoder"
+            fi
+          - |
+            if [[ -n "${QQ_FLAGS}" ]]; then
+              FLAGS+=" ${QQ_FLAGS}"
             fi
           - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
