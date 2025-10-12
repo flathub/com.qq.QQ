@@ -29,90 +29,34 @@
     <category>Network</category>
   </categories>
   <releases>
-    <release version="3.2.19_250904" date="2025-09-04">
-      <description></description>
-    </release>
-    <release version="3.2.18_250724" date="2025-07-24">
-      <description></description>
-    </release>
-    <release version="3.2.18_250626" date="2025-06-26">
-      <description/>
-    </release>
-    <release version="3.2.18_250616" date="2025-06-16">
-      <description/>
-    </release>
-    <release version="3.2.17_250521" date="2025-05-21">
-      <description/>
-    </release>
-    <release version="3.2.17_250519" date="2025-05-19">
-      <description/>
-    </release>
-    <release version="3.2.17_250429" date="2025-04-29">
-      <description/>
-    </release>
-    <release version="3.2.17_250423" date="2025-04-23">
-      <description/>
-    </release>
-    <release version="3.2.16_250401" date="2025-04-01">
-      <description/>
-    </release>
-    <release version="3.2.16_250318" date="2025-03-18">
-      <description/>
-    </release>
-    <release version="3.2.16_250307" date="2025-03-07">
-      <description/>
-    </release>
-    <release version="3.2.15_250110" date="2025-01-10">
-      <description/>
-    </release>
-    <release version="3.2.15_241224" date="2024-12-25">
-      <description/>
-    </release>
-    <release version="3.2.15_241210" date="2024-12-10">
-      <description/>
-    </release>
-    <release version="3.2.13_241121" date="2024-11-21">
-      <description/>
-    </release>
-    <release version="3.2.13_241118" date="2024-11-18">
-      <description/>
-    </release>
-    <release version="3.2.13_241112" date="2024-11-12">
-      <description/>
-    </release>
-    <release version="3.2.13_241104" date="2024-11-04">
-      <description/>
-    </release>
-    <release version="3.2.13_241023" date="2024-10-24">
-      <description/>
-    </release>
-    <release version="3.2.12_240927" date="2024-09-27">
-      <description/>
-    </release>
-    <release version="3.2.12_240919" date="2024-09-19">
-      <description/>
-    </release>
-    <release version="3.2.12_240902" date="2024-09-02">
-      <description/>
-    </release>
-    <release version="3.2.12_240819" date="2024-08-19">
-      <description/>
-    </release>
-    <release version="3.2.12_240808" date="2024-08-08">
-      <description/>
-    </release>
-    <release version="3.2.10_240715" date="2024-07-15">
-      <description/>
-    </release>
-    <release version="3.2.9_240617" date="2024-06-17">
-      <description/>
-    </release>
-    <release version="3.2.9_240606" date="2024-06-06">
-      <description/>
-    </release>
-    <release version="3.2.8_240520" date="2024-05-20">
-      <description/>
-    </release>
+    <release version="3.2.19_250904" date="2025-09-04"><description/></release>
+    <release version="3.2.18_250724" date="2025-07-24"><description/></release>
+    <release version="3.2.18_250626" date="2025-06-26"><description/></release>
+    <release version="3.2.18_250616" date="2025-06-16"><description/></release>
+    <release version="3.2.17_250521" date="2025-05-21"><description/></release>
+    <release version="3.2.17_250519" date="2025-05-19"><description/></release>
+    <release version="3.2.17_250429" date="2025-04-29"><description/></release>
+    <release version="3.2.17_250423" date="2025-04-23"><description/></release>
+    <release version="3.2.16_250401" date="2025-04-01"><description/></release>
+    <release version="3.2.16_250318" date="2025-03-18"><description/></release>
+    <release version="3.2.16_250307" date="2025-03-07"><description/></release>
+    <release version="3.2.15_250110" date="2025-01-10"><description/></release>
+    <release version="3.2.15_241224" date="2024-12-25"><description/></release>
+    <release version="3.2.15_241210" date="2024-12-10"><description/></release>
+    <release version="3.2.13_241121" date="2024-11-21"><description/></release>
+    <release version="3.2.13_241118" date="2024-11-18"><description/></release>
+    <release version="3.2.13_241112" date="2024-11-12"><description/></release>
+    <release version="3.2.13_241104" date="2024-11-04"><description/></release>
+    <release version="3.2.13_241023" date="2024-10-24"><description/></release>
+    <release version="3.2.12_240927" date="2024-09-27"><description/></release>
+    <release version="3.2.12_240919" date="2024-09-19"><description/></release>
+    <release version="3.2.12_240902" date="2024-09-02"><description/></release>
+    <release version="3.2.12_240819" date="2024-08-19"><description/></release>
+    <release version="3.2.12_240808" date="2024-08-08"><description/></release>
+    <release version="3.2.10_240715" date="2024-07-15"><description/></release>
+    <release version="3.2.9_240617" date="2024-06-17"><description/></release>
+    <release version="3.2.9_240606" date="2024-06-06"><description/></release>
+    <release version="3.2.8_240520" date="2024-05-20"><description/></release>
     <release version="3.2.7_240428" date="2024-04-28"/>
     <release version="3.2.7_240422" date="2024-04-22"/>
     <release version="3.2.7-240410" date="2024-04-10"/>
