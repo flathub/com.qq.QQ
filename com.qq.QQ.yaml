@@ -102,7 +102,7 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          # 强制 X11（Electron）
+          # X11（Electron）
           - FLAGS="--ozone-platform=x11"
           - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
