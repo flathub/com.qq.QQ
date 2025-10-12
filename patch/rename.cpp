@@ -38,11 +38,11 @@ extern "C" int rename(const char* from, const char* to) {
         fs::path to_path(to);
 
         if (!std::filesystem::exists(from_path) && std::filesystem::exists(to_path)) {
-            return 1; // QQ 如果多次 rename，同一目标已存在则直接返回成功
+            return 1; 
         }
 
         if (fs::is_directory(from_path)) {
-            return result; // 目录情况不处理
+            return result; 
         }
         
         std::error_code ec;
@@ -50,13 +50,13 @@ extern "C" int rename(const char* from, const char* to) {
 
         fs::copy(from_path, to_path, options, ec);
         if (ec) {
-            std::cerr << "ERCF:" << ec.message() << std::endl; // Error Copy File
+            std::cerr << "ERCF:" << ec.message() << std::endl; 
             return -1; 
         }
 
         fs::remove(from_path, ec);
         if (ec) {
-            std::cerr << "ERRF:" << ec.message() << std::endl; // Error Remove File
+            std::cerr << "ERRF:" << ec.message() << std::endl; 
             return -1;
         }
     }
