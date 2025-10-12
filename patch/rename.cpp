@@ -11,7 +11,6 @@ However, within the Flatpak container, the host machine's download directory and
 are not on the same mount point. The glibc rename() function does not support moving files between different 
 mount points because its implementation relies on hard link. Therefore, we need to rewrite a rename() function, 
 compile it as a dynamic library, and inject it into QQ using LD_PRELOAD.
-
 */
 #define _GNU_SOURCE
 #include <iostream>
@@ -38,34 +37,28 @@ extern "C" int rename(const char* from, const char* to) {
         fs::path from_path(from);
         fs::path to_path(to);
 
-        if(!std::filesystem::exists(from_path) && 
-            std::filesystem::exists(to_path) ) {
-            return 1;                                         // if qq call rename() fails, it tends to call mutiple
-        }                                                    // times, so if the file is already copied just return.
+        if (!std::filesystem::exists(from_path) && std::filesystem::exists(to_path)) {
+            return 1; // QQ 如果多次 rename，同一目标已存在则直接返回成功
+        }
 
         if (fs::is_directory(from_path)) {
-            return result;                                    // we don't handle the situation where from is dir
+            return result; // 目录情况不处理
         }
         
         std::error_code ec;
         fs::copy_options options = fs::copy_options::update_existing;
 
         fs::copy(from_path, to_path, options, ec);
-
-
         if (ec) {
-            std::cerr << "ERCF:" << ec.message() << std::endl; // ERCF means error copy file
+            std::cerr << "ERCF:" << ec.message() << std::endl; // Error Copy File
             return -1; 
         }
 
         fs::remove(from_path, ec);
-
         if (ec) {
-            std::cerr << "ERRF:" << ec.message() << std::endl; // EROF means error remove file
-            return -1; // Return an error code for old file removal failure.
+            std::cerr << "ERRF:" << ec.message() << std::endl; // Error Remove File
+            return -1;
         }
-
     }
     return result;
-
 }
