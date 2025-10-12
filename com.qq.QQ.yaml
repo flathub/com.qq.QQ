@@ -13,15 +13,14 @@ finish-args:
   - --share=ipc
   - --share=network
 
+  - --socket=x11
   - --socket=fallback-x11
-  - --socket=wayland
   - --socket=pulseaudio
 
   # Filesystems
   - --filesystem=xdg-download
 
-  # required to fix cursor scaling on wayland
-  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+  # - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
 
   # D-Bus Access
   - --talk-name=org.freedesktop.Notifications
@@ -38,7 +37,7 @@ cleanup:
   - '*.la'
 
 modules:
-  # runtime cups is built aginst openssl
+  # runtime cups is built against openssl
   # need cups with gnutls for qq to load gnutls func
   - name: cups
     config-opts:
@@ -85,7 +84,7 @@ modules:
       - install -pDm644 "local.conf" -t "/app/etc/fonts/";
       - install -pDm644 "70-noto-cjk.conf" -t "/app/etc/fonts/conf.d/";
       # `||:` return a successful exit status
-      - fc-cache -fsv ||:;
+      - fc-cache -fsv ||:
     sources:
       - type: file
         url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
@@ -106,16 +105,8 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - WAYLAND_SOCKET=${WAYLAND_DISPLAY:-"wayland-0"}
-          - |
-            if [[ -e "$XDG_RUNTIME_DIR/${WAYLAND_SOCKET}" || -e "${WAYLAND_DISPLAY}" ]]
-            then
-              FLAGS="--ozone-platform-hint=auto --enable-wayland-ime"
-              case "${XDG_CURRENT_DESKTOP}" in
-                "KDE" | "Hyprland") ;;
-                *) FLAGS+=" --wayland-text-input-version=3" ;;
-              esac
-            fi
+          # 强制 X11（Electron）
+          - FLAGS="--ozone-platform=x11"
           - exec zypak-wrapper /app/extra/QQ/qq $FLAGS "$@"
         dest-filename: qq.sh
 
