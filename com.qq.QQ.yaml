@@ -13,7 +13,8 @@ finish-args:
   - --share=ipc
   - --share=network
 
-  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
   - --socket=pulseaudio
 
   # Filesystems
@@ -88,6 +89,9 @@ modules:
         sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
       - type: file
         path: patch/local.conf
+  # For Wayland-only compatibility, workarounding clipboard crash issue
+  # https://github.com/flathub/org.flatpak.Builder.BaseApp/blob/branch/25.08/xvfb.json
+  - xvfb.json
 
   - name: qq
     buildsystem: simple
@@ -109,11 +113,17 @@ modules:
               echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
               readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
             else
-              echo "Adding X11 related flags..."
-              FLAGS+=(--ozone-platform=x11)
+              echo "Adding default flags..."
+              FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime --wayland-text-input-version=3)
             fi
           - echo "Pass \`${FLAGS[*]}\` to main process..."
-          - exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+          - |
+            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
+              echo "X11 socket is not available, using Wayland + Xvfb..."
+              exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+            else
+              exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+            fi
         dest-filename: qq.sh
 
       - type: script
