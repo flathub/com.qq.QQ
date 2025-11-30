@@ -118,7 +118,7 @@ modules:
             fi
           - echo "Pass \`${FLAGS[*]}\` to main process..."
           - |
-            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
+            if [ ! -e "/tmp/.X11-unix" ] && [ -n "$WAYLAND_DISPLAY" ]; then
               echo "X11 socket is not available, using Wayland + Xvfb..."
               exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             else
