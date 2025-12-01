@@ -6,24 +6,21 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import queue
 import shutil
 import signal
 import subprocess
 import sys
 import threading
+import time
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Sequence, Callable
 
 DEFAULT_INTERVAL = float(os.environ.get("CLIPSYNC_INTERVAL", "0.3"))
+DEFAULT_SELECTIONS: Sequence[str] = ("clipboard", "primary")
 DEFAULT_TEXT_MIME = "text/plain;charset=utf-8"
 DEFAULT_BINARY_MIME = "application/octet-stream"
-DEFAULT_SELECTIONS: Sequence[str] = ("clipboard", "primary")
 IGNORED_TARGETS = {"targets", "timestamp", "multiple", "save_targets"}
-FILE_TARGET_PREFS = [
-    "application/x-gnome-copied-files",
-    "x-special/nautilus-clipboard",
-    "text/uri-list",
-]
 IMAGE_TARGET_PREFS = [
     "image/png",
     "image/jpeg",
@@ -31,6 +28,11 @@ IMAGE_TARGET_PREFS = [
     "image/bmp",
     "image/tiff",
     "image/gif",
+]
+FILE_TARGET_PREFS = [
+    "application/x-gnome-copied-files",
+    "x-special/nautilus-clipboard",
+    "text/uri-list",
 ]
 TEXT_TARGET_PREFS = [
     "text/plain;charset=utf-8",
@@ -57,13 +59,13 @@ TYPE_ALIASES = {
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Continuously copy the X clipboard and primary selection into the Wayland clipboard via wl-copy.",
+        description="Continuously mirror the X clipboard and primary selection into the Wayland clipboard via wl-copy.",
     )
     parser.add_argument(
         "--interval",
         type=float,
         default=DEFAULT_INTERVAL,
-        help="Polling interval in seconds. Defaults to %(default)s.",
+        help="Maximum wait (seconds) before checking for shutdown. Defaults to %(default)s.",
     )
     parser.add_argument(
         "--display",
@@ -136,11 +138,11 @@ def classify_targets(targets: Sequence[str]) -> Optional[ClipboardSelection]:
     image_target = pick_preferred(
         cleaned,
         IMAGE_TARGET_PREFS,
-        extra_predicate=lambda t: t.startswith("image/")
+        extra_predicate=lambda t: t.startswith("image/"),
     )
     if image_target:
         return ClipboardSelection(image_target, image_target, "image")
-    
+
     file_target = pick_preferred(
         cleaned,
         FILE_TARGET_PREFS,
@@ -183,7 +185,7 @@ def run_xclip(
     )
 
 
-def current_targets(selection: str, env: Dict[str, str], *, debug_enabled: bool) -> List[str]:
+def current_targets(selection: str, env: Dict[str, str], *, debug_enabled: bool) -> Sequence[str]:
     try:
         proc = run_xclip(selection, ["-out", "-target", "TARGETS"], env=env, text=True)
     except subprocess.CalledProcessError as exc:
@@ -193,8 +195,7 @@ def current_targets(selection: str, env: Dict[str, str], *, debug_enabled: bool)
             enabled=debug_enabled,
         )
         return []
-    targets = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
-    return targets
+    return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
 def read_target(
@@ -227,58 +228,126 @@ def copy_to_wayland(data: bytes, wl_type: str) -> bool:
 
 
 def fingerprint(target: str, data: bytes) -> str:
-    digest = hashlib.sha256(target.encode("utf-8") + b"\0" + data).hexdigest()
-    return digest
+    return hashlib.sha256(target.encode("utf-8") + b"\0" + data).hexdigest()
+
+
+def handle_selection(
+    selection: str,
+    env: Dict[str, str],
+    last_marks: Dict[str, Optional[str]],
+    last_wayland_mark: Optional[str],
+    debug: bool,
+) -> Optional[str]:
+    targets = current_targets(selection, env, debug_enabled=debug)
+    info = classify_targets(targets)
+    if not info:
+        if last_marks.get(selection) is not None:
+            log(f"{selection} selection empty; waiting", debug=True, enabled=debug)
+        last_marks[selection] = None
+        return last_wayland_mark
+
+    payload = read_target(selection, info.x_target, env, debug_enabled=debug)
+    if payload is None:
+        return last_wayland_mark
+
+    mark = fingerprint(info.wl_type, payload)
+    if mark == last_marks.get(selection) or mark == last_wayland_mark:
+        last_marks[selection] = mark
+        return last_wayland_mark
+
+    if copy_to_wayland(payload, info.wl_type):
+        last_marks[selection] = mark
+        log(
+            f"Wayland clipboard updated from {selection} ({info.category}) via '{info.wl_type}' ({len(payload)} bytes)",
+            enabled=True,
+        )
+        return mark
+
+    return last_wayland_mark
+
+
+def clipnotify_worker(
+    selection: str,
+    env: Dict[str, str],
+    event_queue: "queue.Queue[str]",
+    stop_event: threading.Event,
+    debug: bool,
+) -> None:
+    event_queue.put(selection)
+    args = ["clipnotify", "-s", selection, "-l"]
+    while not stop_event.is_set():
+        try:
+            proc = subprocess.Popen(
+                args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1,
+                env=env,
+            )
+        except FileNotFoundError:
+            log("clipnotify not found in PATH", enabled=True)
+            stop_event.set()
+            return
+
+        try:
+            while not stop_event.is_set():
+                line = proc.stdout.readline()
+                if not line:
+                    if proc.poll() is not None:
+                        err = proc.stderr.read().strip() if proc.stderr else ""
+                        log(
+                            f"clipnotify for {selection} exited unexpectedly: {err or 'no details'}",
+                            enabled=True,
+                        )
+                        stop_event.set()
+                        return
+                    continue
+                event_queue.put(selection)
+        finally:
+            if proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=0.5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait(timeout=0.5)
+        time.sleep(0.1)
 
 
 def mirror_clipboards(
-    selections: Sequence[str],
     env: Dict[str, str],
     interval: float,
     debug: bool,
     stop_event: threading.Event,
 ) -> None:
+    selections = list(DEFAULT_SELECTIONS)
+    event_queue: "queue.Queue[str]" = queue.Queue()
+    watchers: List[threading.Thread] = []
+
+    for sel in selections:
+        thread = threading.Thread(
+            target=clipnotify_worker,
+            args=(sel, env, event_queue, stop_event, debug),
+            daemon=True,
+        )
+        thread.start()
+        watchers.append(thread)
+
     last_marks: Dict[str, Optional[str]] = {sel: None for sel in selections}
     last_wayland_mark: Optional[str] = None
 
-    readable = ", ".join(selections)
-    log(
-        f"Watching X selections [{readable}] on {env['DISPLAY']} every {interval:.2f}s",
-        enabled=True,
-    )
-
     while not stop_event.is_set():
-        for sel in selections:
-            if stop_event.is_set():
-                break
+        try:
+            selection = event_queue.get(timeout=interval)
+        except queue.Empty:
+            continue
+        if selection not in last_marks:
+            continue
+        last_wayland_mark = handle_selection(selection, env, last_marks, last_wayland_mark, debug)
 
-            targets = current_targets(sel, env, debug_enabled=debug)
-            selection_info = classify_targets(targets)
-            if not selection_info:
-                if last_marks.get(sel) is not None:
-                    log(f"{sel} selection empty or unsupported; waiting", debug=True, enabled=debug)
-                last_marks[sel] = None
-                continue
-
-            payload = read_target(sel, selection_info.x_target, env, debug_enabled=debug)
-            if payload is None:
-                continue
-
-            mark = fingerprint(selection_info.wl_type, payload)
-            if mark == last_marks.get(sel) or mark == last_wayland_mark:
-                last_marks[sel] = mark
-                continue
-
-            if copy_to_wayland(payload, selection_info.wl_type):
-                last_marks[sel] = mark
-                last_wayland_mark = mark
-                log(
-                    f"Wayland clipboard updated from {sel} ({selection_info.category}) via '{selection_info.wl_type}' "
-                    f"({len(payload)} bytes)",
-                    enabled=True,
-                )
-
-        stop_event.wait(interval)
+    for thread in watchers:
+        thread.join(timeout=interval)
 
 
 def run_wrapped_command(command: Sequence[str]) -> int:
@@ -298,6 +367,7 @@ def main() -> int:
 
     require_binary("xclip")
     require_binary("wl-copy")
+    require_binary("clipnotify")
 
     if not args.display:
         print("error: --display was not provided and $DISPLAY is unset", file=sys.stderr)
@@ -313,7 +383,7 @@ def main() -> int:
     stop_event = threading.Event()
     worker = threading.Thread(
         target=mirror_clipboards,
-        args=(DEFAULT_SELECTIONS, env, args.interval, args.debug, stop_event),
+        args=(env, args.interval, args.debug, stop_event),
         daemon=True,
     )
     worker.start()
@@ -326,7 +396,7 @@ def main() -> int:
             while not stop_event.wait(1):
                 continue
     except KeyboardInterrupt:
-        print("Interrupted, exiting...", file=sys.stderr)
+        log("Interrupted, exiting...", enabled=True)
         exit_code = 130
     finally:
         stop_event.set()

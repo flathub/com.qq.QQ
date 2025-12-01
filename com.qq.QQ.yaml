@@ -134,6 +134,16 @@ modules:
     cleanup:
       - /share/man
 
+  # https://github.com/cdown/clipnotify
+  - name: clipnotify
+    buildsystem: simple
+    build-commands:
+      - gcc -o clipnotify clipnotify.c -lX11 -lXfixes
+      - install -Dm755 clipnotify $FLATPAK_DEST/bin/clipnotify
+    sources:
+      - type: file
+        path: clipnotify.c
+
   - name: qq
     buildsystem: simple
     build-commands:
