@@ -139,6 +139,7 @@ modules:
     build-commands:
       - install apply_extra $FLATPAK_DEST/bin
       - install -Dm755 qq.sh $FLATPAK_DEST/bin/qq
+      - install -Dm755 clipsync.py $FLATPAK_DEST/bin/clipsync.py
       - install -Dm644 com.qq.QQ.metainfo.xml -t $FLATPAK_DEST/share/metainfo
       - install -Dm644 com.qq.QQ.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
       - install -Dm644 com.qq.QQ.desktop -t $FLATPAK_DEST/share/applications
@@ -161,7 +162,7 @@ modules:
           - |
             if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
               echo "X11 socket is not available, using Wayland + Xvfb..."
-              exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+              exec xvfb-run clipsync.py zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             else
               exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             fi
@@ -182,6 +183,9 @@ modules:
 
       - type: file
         path: com.qq.QQ.desktop
+      
+      - type: file
+        path: clipsync.py
 
       - type: extra-data
         filename: qq.deb
