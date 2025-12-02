@@ -70,7 +70,7 @@ modules:
     buildsystem: simple
     build-commands:
       - mkdir -p $FLATPAK_DEST/etc/preload
-      - g++ -shared -fPIC -o rename.so rename.cpp -ldl
+      - g++ -O2 -shared -fPIC -o rename.so rename.cpp -ldl
       - install -Dm755 ./rename.so -t $FLATPAK_DEST/etc/preload/
     sources:
       - type: file
