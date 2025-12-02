@@ -138,7 +138,7 @@ modules:
   - name: clipnotify
     buildsystem: simple
     build-commands:
-      - gcc -o clipnotify clipnotify.c -lX11 -lXfixes
+      - gcc -o clipnotify clipnotify.c -O2 -lX11 -lXfixes
       - install -Dm755 clipnotify $FLATPAK_DEST/bin/clipnotify
     sources:
       - type: file
