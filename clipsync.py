@@ -16,6 +16,7 @@ import time
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Optional, Sequence, Callable
 
+DESKTOP = os.environ.get("XDG_CURRENT_DESKTOP", "")
 DEFAULT_INTERVAL = float(os.environ.get("CLIPSYNC_INTERVAL", "0.3"))
 DEFAULT_SELECTIONS: Sequence[str] = ("clipboard", "primary")
 DEFAULT_TEXT_MIME = "text/plain;charset=utf-8"
@@ -30,10 +31,12 @@ IMAGE_TARGET_PREFS = [
     "image/gif",
 ]
 FILE_TARGET_PREFS = [
-    "application/x-gnome-copied-files",
-    "x-special/nautilus-clipboard",
     "text/uri-list",
 ]
+if DESKTOP == "GNOME":
+    FILE_TARGET_PREFS.insert(0, "x-special/gnome-copied-files")
+elif DESKTOP == "KDE":
+    FILE_TARGET_PREFS.insert(0, "application/x-kde-cutselection")
 TEXT_TARGET_PREFS = [
     "text/plain;charset=utf-8",
     "text/plain",
@@ -133,7 +136,9 @@ def classify_targets(targets: Sequence[str]) -> Optional[ClipboardSelection]:
         return None
 
     def alias_for(target: str, *, default: str) -> str:
-        return TYPE_ALIASES.get(target.lower(), target if target.startswith("text/") else default)
+        return TYPE_ALIASES.get(
+            target.lower(), target if target.startswith("text/") else default
+        )
 
     image_target = pick_preferred(
         cleaned,
@@ -155,7 +160,8 @@ def classify_targets(targets: Sequence[str]) -> Optional[ClipboardSelection]:
     text_target = pick_preferred(
         cleaned,
         TEXT_TARGET_PREFS,
-        extra_predicate=lambda t: t.startswith("text/") or t in {"utf8_string", "string"},
+        extra_predicate=lambda t: t.startswith("text/")
+        or t in {"utf8_string", "string"},
     )
     if text_target:
         wl_type = alias_for(text_target, default=DEFAULT_TEXT_MIME)
@@ -185,7 +191,9 @@ def run_xclip(
     )
 
 
-def current_targets(selection: str, env: Dict[str, str], *, debug_enabled: bool) -> Sequence[str]:
+def current_targets(
+    selection: str, env: Dict[str, str], *, debug_enabled: bool
+) -> Sequence[str]:
     try:
         proc = run_xclip(selection, ["-out", "-target", "TARGETS"], env=env, text=True)
     except subprocess.CalledProcessError as exc:
@@ -210,7 +218,11 @@ def read_target(
         return proc.stdout
     except subprocess.CalledProcessError as exc:
         err = exc.stderr.decode().strip() if exc.stderr else str(exc)
-        log(f"failed to read target {target} for {selection}: {err}", debug=True, enabled=debug_enabled)
+        log(
+            f"failed to read target {target} for {selection}: {err}",
+            debug=True,
+            enabled=debug_enabled,
+        )
         return None
 
 
@@ -344,7 +356,9 @@ def mirror_clipboards(
             continue
         if selection not in last_marks:
             continue
-        last_wayland_mark = handle_selection(selection, env, last_marks, last_wayland_mark, debug)
+        last_wayland_mark = handle_selection(
+            selection, env, last_marks, last_wayland_mark, debug
+        )
 
     for thread in watchers:
         thread.join(timeout=interval)
@@ -370,7 +384,9 @@ def main() -> int:
     require_binary("clipnotify")
 
     if not args.display:
-        print("error: --display was not provided and $DISPLAY is unset", file=sys.stderr)
+        print(
+            "error: --display was not provided and $DISPLAY is unset", file=sys.stderr
+        )
         return 1
 
     env = dict(os.environ)
