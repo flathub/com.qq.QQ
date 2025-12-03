@@ -56,7 +56,6 @@ TYPE_ALIASES = {
     "text/plain;charset=utf-8": DEFAULT_TEXT_MIME,
     "text/plain;charset=utf-16": "text/plain",
     "text/plain;charset=utf16": "text/plain",
-    "x-special/nautilus-clipboard": "application/x-gnome-copied-files",
 }
 
 
@@ -151,7 +150,6 @@ def classify_targets(targets: Sequence[str]) -> Optional[ClipboardSelection]:
     file_target = pick_preferred(
         cleaned,
         FILE_TARGET_PREFS,
-        extra_predicate=lambda t: "copied-files" in t or t.endswith("uri-list"),
     )
     if file_target:
         wl_type = TYPE_ALIASES.get(file_target.lower(), file_target)
