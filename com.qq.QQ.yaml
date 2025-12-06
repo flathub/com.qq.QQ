@@ -144,9 +144,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.22_251203_amd64_01.deb
-        sha256: 3f004bdb246b3194d276c636ea96cb40a7e0b813fea470957d1331e80332bd54
-        size: 170943142
+        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.21_251114_amd64_01.deb
+        sha256: 199cafce40b10cfceb03d4c380ef55f9e69385aac418f3ec7eae93b8e9362922
+        size: 171084536
         x-checker-data:
           type: html
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
