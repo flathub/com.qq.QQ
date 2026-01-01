@@ -132,7 +132,7 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://gitlab.freedesktop.org/xorg/app/xauth/-/archive/xauth-1.1.1/xauth-xauth-1.1.4.tar.bz2",
+                    "url": "https://gitlab.freedesktop.org/xorg/app/xauth/-/archive/xauth-1.1.1/xauth-xauth-1.1.5.tar.bz2",
                     "sha256": "3cee16ebe9de0e85c62513f6d6353710407c8ebb1f855b18d03807c27d38a215",
                     "x-checker-data": {
                         "type": "anitya",
