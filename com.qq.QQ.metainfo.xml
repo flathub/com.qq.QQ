@@ -11,7 +11,8 @@
   <url type="help">https://kf.qq.com/product/QQ.html</url>
   <description>
     <p>**NOTE: This wrapper is not verified by, affiliated with, or supported by Tencent.**</p>
-    <p>Tencent QQ (Chinese: 腾讯QQ), also known as QQ, is an instant messaging software service and web portal developed by the Chinese technology company Tencent.</p>
+    <p>Tencent QQ (Chinese: 腾讯QQ), also known as QQ, is an instant messaging software service 
+    and web portal developed by the Chinese technology company Tencent.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -24,144 +25,24 @@
       <image>https://user-images.githubusercontent.com/672668/278006549-c3da6fbe-82d6-46a9-a338-3f2233554c5c.png</image>
     </screenshot>
   </screenshots>
-  <categories>
-    <category>InstantMessaging</category>
-    <category>Network</category>
-  </categories>
   <releases>
-    <release version="3.2.22_251203" date="2025-12-03">
-      <description></description>
-    </release>
-    <release version="3.2.23_260108" date="2026-01-08">
-      <description/>
-    </release>
-    <release version="3.2.22_251203" date="2025-12-03">
-      <description/>
-    </release>
-    <release version="3.2.21_251114" date="2025-11-14">
-      <description/>
-    </release>
-    <release version="3.2.21_251105" date="2025-11-05">
-      <description/>
-    </release>
-    <release version="3.2.20_251023" date="2025-10-23">
-      <description/>
-    </release>
-    <release version="3.2.19_250904" date="2025-09-04">
-      <description/>
-    </release>
-    <release version="3.2.18_250724" date="2025-07-24">
-      <description/>
-    </release>
-    <release version="3.2.18_250626" date="2025-06-26">
-      <description/>
-    </release>
-    <release version="3.2.18_250616" date="2025-06-16">
-      <description/>
-    </release>
-    <release version="3.2.17_250521" date="2025-05-21">
-      <description/>
-    </release>
-    <release version="3.2.17_250519" date="2025-05-19">
-      <description/>
-    </release>
-    <release version="3.2.17_250429" date="2025-04-29">
-      <description/>
-    </release>
-    <release version="3.2.17_250423" date="2025-04-23">
-      <description/>
-    </release>
-    <release version="3.2.16_250401" date="2025-04-01">
-      <description/>
-    </release>
-    <release version="3.2.16_250318" date="2025-03-18">
-      <description/>
-    </release>
-    <release version="3.2.16_250307" date="2025-03-07">
-      <description/>
-    </release>
-    <release version="3.2.15_250110" date="2025-01-10">
-      <description/>
-    </release>
-    <release version="3.2.15_241224" date="2024-12-25">
-      <description/>
-    </release>
-    <release version="3.2.15_241210" date="2024-12-10">
-      <description/>
-    </release>
-    <release version="3.2.13_241121" date="2024-11-21">
-      <description/>
-    </release>
-    <release version="3.2.13_241118" date="2024-11-18">
-      <description/>
-    </release>
-    <release version="3.2.13_241112" date="2024-11-12">
-      <description/>
-    </release>
-    <release version="3.2.13_241104" date="2024-11-04">
-      <description/>
-    </release>
-    <release version="3.2.13_241023" date="2024-10-24">
-      <description/>
-    </release>
-    <release version="3.2.12_240927" date="2024-09-27">
-      <description/>
-    </release>
-    <release version="3.2.12_240919" date="2024-09-19">
-      <description/>
-    </release>
-    <release version="3.2.12_240902" date="2024-09-02">
-      <description/>
-    </release>
-    <release version="3.2.12_240819" date="2024-08-19">
-      <description/>
-    </release>
-    <release version="3.2.12_240808" date="2024-08-08">
-      <description/>
-    </release>
-    <release version="3.2.10_240715" date="2024-07-15">
-      <description/>
-    </release>
-    <release version="3.2.9_240617" date="2024-06-17">
-      <description/>
-    </release>
-    <release version="3.2.9_240606" date="2024-06-06">
-      <description/>
-    </release>
-    <release version="3.2.8_240520" date="2024-05-20">
-      <description/>
-    </release>
-    <release version="3.2.7_240428" date="2024-04-28"/>
-    <release version="3.2.7_240422" date="2024-04-22"/>
-    <release version="3.2.7-240410" date="2024-04-10"/>
-    <release version="3.2.6-240322" date="2024-03-22"/>
-    <release version="3.2.6-22165" date="2024-03-20"/>
-    <release version="3.2.5-240305" date="2024-03-05"/>
-    <release version="3.2.5-21453" date="2024-02-07"/>
-    <release version="3.2.5-21357" date="2024-02-02"/>
-    <release version="3.2.5-21217" date="2024-01-30"/>
-    <release version="3.2.5-21159" date="2024-01-25"/>
-    <release version="3.2.5-20811" date="2024-01-12"/>
-    <release version="3.2.3-20201" date="2023-12-25"/>
-    <release version="3.2.3-19689" date="2023-12-14"/>
-    <release version="3.2.3-19189" date="2023-11-30"/>
-    <release version="3.2.3-18968" date="2023-11-30"/>
-    <release version="3.2.2-18394" date="2023-11-10"/>
-    <release version="3.2.1-17816" date="2023-10-25"/>
-    <release version="3.2.1-17749" date="2023-10-23"/>
-    <release version="3.2.1-17412" date="2023-10-12"/>
-    <release version="3.2.1-17260" date="2023-10-11"/>
-    <release version="3.2.1-17153" date="2023-09-22"/>
-    <release version="3.2.0-16736" date="2023-09-11"/>
-    <release version="3.2.0-16605" date="2023-09-01"/>
-    <release version="3.2.0-16449" date="2023-08-26"/>
-    <release version="3.1.2-13107" date="2023-05-31"/>
-    <release version="3.1.2-12912" date="2023-05-18"/>
-    <release version="3.1.1-11223" date="2023-03-27"/>
-    <release version="3.1.0-9572" date="2023-02-23"/>
-    <release version="3.1.0-9332" date="2022-02-20"/>
-    <release version="3.0.0-571" date="2022-12-30"/>
-    <release version="2.0.1" date="2022-12-08"/>
+    <release version="3.2.23_260108" date="2026-01-08"/>
+    <release version="3.2.22_251203" date="2025-12-03"/>
+    <release version="3.2.21_251114" date="2025-11-14"/>
+    <release version="3.2.21_251105" date="2025-11-05"/>
+    <release version="3.2.20_251023" date="2025-10-23"/>
+    <release version="3.2.19_250904" date="2025-09-04"/>
+    <release version="3.2.18_250724" date="2025-07-24"/>
+    <release version="3.2.18_250626" date="2025-06-26"/>
+    <release version="3.2.18_250616" date="2025-06-16"/>
+    <release version="3.2.17_250521" date="2025-05-21"/>
+    <release version="3.2.17_250519" date="2025-05-19"/>
+    <release version="3.2.17_250429" date="2025-04-29"/>
+    <release version="3.2.17_250423" date="2025-04-23"/>
+    <release version="3.2.16_250401" date="2025-04-01"/>
+    <release version="3.2.16_250318" date="2025-03-18"/>
+    <release version="3.2.16_250307" date="2025-03-07"/>
+    <release version="3.2.15_250110" date="2025-01-10"/>
   </releases>
   <content_rating type="oars-1.1">
     <content_attribute id="social-chat">intense</content_attribute>

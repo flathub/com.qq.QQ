@@ -5,5 +5,5 @@ Terminal=false
 Type=Application
 Icon=com.qq.QQ
 StartupWMClass=QQ
-Categories=Network;
+Categories=Network;InstantMessaging;
 Comment=QQ
