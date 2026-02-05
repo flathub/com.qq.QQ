@@ -92,11 +92,63 @@ modules:
   # https://github.com/flathub/org.flatpak.Builder.BaseApp/blob/branch/25.08/xvfb.json
   - xvfb.json
 
+  # https://github.com/flathub/io.neovim.nvim/blob/a10af66097bbfff4a98286d215f183d4909aa1e6/io.neovim.nvim.yaml#L186
+  - name: xclip
+    sources:
+      - type: archive
+        url: https://github.com/astrand/xclip/archive/0.13.tar.gz
+        sha256: ca5b8804e3c910a66423a882d79bf3c9450b875ac8528791fb60ec9de667f758
+    cleanup:
+      - /share/man
+      - /bin/xclip-*file
+    modules:
+      - name: libXmu
+        config-opts:
+          - --disable-static
+          - --disable-docs
+        sources:
+          - type: archive
+            url: https://www.x.org/releases/individual/lib/libXmu-1.1.3.tar.bz2
+            sha256: 9c343225e7c3dc0904f2122b562278da5fed639b1b5e880d25111561bac5b731
+        cleanup:
+          - /include
+          - /lib/pkgconfig
+          - "*.la"
+
+  # https://github.com/flathub/io.neovim.nvim/blob/a10af66097bbfff4a98286d215f183d4909aa1e6/io.neovim.nvim.yaml#L169
+  - name: wl-clipboard
+    buildsystem: meson
+    config-opts:
+      - -Dzshcompletiondir=no
+      - -Dfishcompletiondir=no
+    sources:
+      - type: archive
+        url: https://github.com/bugaevc/wl-clipboard/archive/v2.2.1.tar.gz
+        sha256: 6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41aa1143783eb
+        x-checker-data:
+          type: anitya
+          project-id: 49082
+          url-template: https://github.com/bugaevc/wl-clipboard/archive/v$version.tar.gz
+
+    cleanup:
+      - /share/man
+
+  # https://github.com/cdown/clipnotify
+  - name: clipnotify
+    buildsystem: simple
+    build-commands:
+      - gcc -o clipnotify clipnotify.c -O2 -lX11 -lXfixes
+      - install -Dm755 clipnotify $FLATPAK_DEST/bin/clipnotify
+    sources:
+      - type: file
+        path: clipnotify.c
+
   - name: qq
     buildsystem: simple
     build-commands:
       - install apply_extra $FLATPAK_DEST/bin
       - install -Dm755 qq.sh $FLATPAK_DEST/bin/qq
+      - install -Dm755 clipsync.py $FLATPAK_DEST/bin/clipsync.py
       - install -Dm644 com.qq.QQ.metainfo.xml -t $FLATPAK_DEST/share/metainfo
       - install -Dm644 com.qq.QQ.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
       - install -Dm644 com.qq.QQ.desktop -t $FLATPAK_DEST/share/applications
@@ -119,7 +171,7 @@ modules:
           - |
             if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
               echo "X11 socket is not available, using Wayland + Xvfb..."
-              exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+              exec xvfb-run clipsync.py zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             else
               exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             fi
@@ -140,6 +192,9 @@ modules:
 
       - type: file
         path: com.qq.QQ.desktop
+      
+      - type: file
+        path: clipsync.py
 
       - type: extra-data
         filename: qq.deb
