@@ -49,8 +49,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.2.1.tar.gz",
-                    "sha256": "bf0902583dd1123856c11e0a5085bd3c6e9886fbbd44954464975fd7d52eb599",
+                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.3.1.tar.gz",
+                    "sha256": "5c8f44e26ccc9b14188599524e67ce788a205b38e297834babdeb12090be835b",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 1785,
