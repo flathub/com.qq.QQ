@@ -105,6 +105,13 @@ modules:
         commands:
           - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
+          - |
+            # Clean up versions directory to prevent auto-update issues
+            VERSIONS_DIR="$XDG_CONFIG_HOME/QQ/versions"
+            if [ -d "$VERSIONS_DIR" ]; then
+              echo "Cleaning up versions directory: $VERSIONS_DIR"
+              find "$VERSIONS_DIR" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \; 2>/dev/null || true
+            fi
           - declare -a FLAGS
           - |
             if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
