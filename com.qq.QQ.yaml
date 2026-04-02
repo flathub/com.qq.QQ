@@ -144,9 +144,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.26_260319_amd64_01.deb
-        sha256: c7f4b02dfa14870497b96926a73017fc8f2a619818b1770ec483a3453b93a629
-        size: 173956822
+        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.27_260401_amd64_01.deb
+        sha256: 888e60734552640cda6f607ec3523fea27520ffcf1e393aefaecaa489cc20be7
+        size: 176074466
         x-checker-data:
           type: html
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
@@ -156,9 +156,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.26_260319_arm64_01.deb
-        sha256: 6016d59ceba8c18a94486da884f8ea789b9698c32270cd958f68eba4e535631f
-        size: 192741736
+        url: https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.27_260401_arm64_01.deb
+        sha256: b062d83c075999cc46cbedcba3b3047845f2b2a3f6e174d669063f88cf5b44b5
+        size: 194694528
         x-checker-data:
           type: html
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js
