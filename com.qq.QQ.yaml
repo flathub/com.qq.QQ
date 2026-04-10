@@ -66,15 +66,6 @@ modules:
         url: https://kerberos.org/dist/krb5/1.22/krb5-1.22.1.tar.gz
         sha256: 1a8832b8cad923ebbf1394f67e2efcf41e3a49f460285a66e35adec8fa0053af
 
-  - name: librename
-    buildsystem: simple
-    build-commands:
-      - g++ -O2 -shared -fPIC -o rename.so rename.cpp
-      - install -Dm755 rename.so -t $FLATPAK_DEST/etc/preload/
-    sources:
-      - type: file
-        path: patch/rename.cpp
-
   - name: fontconfig
     buildsystem: simple
     build-commands:
@@ -103,7 +94,6 @@ modules:
     sources:
       - type: script
         commands:
-          - export ZYPAK_LD_PRELOAD="/app/etc/preload/rename.so"
           - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
           - declare -a FLAGS
           - |
