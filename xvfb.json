@@ -12,8 +12,8 @@
     "sources": [
         {
             "type": "archive",
-            "url": "https://gitlab.freedesktop.org/xorg/xserver/-/archive/xorg-server-21.1.21/xserver-xorg-server-21.1.21.tar.bz2",
-            "sha256": "6ea1e692cf1f3bfd1694955b72f42dec06a05afb28131e23bb07c46680e6a322",
+            "url": "https://gitlab.freedesktop.org/xorg/xserver/-/archive/xorg-server-21.1.24/xserver-xorg-server-21.1.24.tar.bz2",
+            "sha256": "9194f9fac5c0ddfb417fa0a0e019c5611002225da430e92267f335d6ed651f68",
             "x-checker-data": {
                 "type": "anitya",
                 "project-id": 5250,
@@ -65,8 +65,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libfontenc-1.1.8.tar.xz",
-                    "sha256": "7b02c3d405236e0d86806b1de9d6868fe60c313628b38350b032914aa4fd14c6",
+                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libfontenc-1.1.9.tar.xz",
+                    "sha256": "9d8392705cb10803d5fe1d27d236cbab3f664e26841ce01916bbbe430cf273e2",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 1613,
@@ -100,8 +100,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://xorg.freedesktop.org/archive/individual/font/font-util-1.4.1.tar.gz",
-                    "sha256": "f029ae80cdd75d89bee7f7af61c21e07982adfb9f72344a158b99f91f77ef5ed",
+                    "url": "https://xorg.freedesktop.org/archive/individual/font/font-util-1.4.2.tar.gz",
+                    "sha256": "6ccf9a65f4c229c611680251f1125f4c9a2071eeb13433c66ac146fe2d4c0d6c",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 15055,
@@ -116,8 +116,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libXfont2-2.0.7.tar.gz",
-                    "sha256": "90b331c2fd2d0420767c4652e007d054c97a3f03a88c55e3b986bd3acfd7e338",
+                    "url": "https://xorg.freedesktop.org/archive/individual/lib/libXfont2-2.0.8.tar.gz",
+                    "sha256": "a53d621b6ceb1dcbd05a0b9bd7f13c34efa40401cd5c05af904035c567a30f18",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 17165,
