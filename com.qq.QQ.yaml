@@ -103,14 +103,20 @@ modules:
               readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
             else
               echo "Adding default flags..."
-              FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime --wayland-text-input-version=3)
+              FLAGS+=(--enable-wayland-ime --wayland-text-input-version=3)
             fi
-          - echo "Pass \`${FLAGS[*]}\` to main process..."
           - |
-            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
-              echo "X11 socket is not available, using Wayland + Xvfb..."
-              exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ]; then
+              if [ -n "$WAYLAND_DISPLAY" ]; then
+                FLAGS+=(--ozone-platform=wayland)
+                echo "Pass \`${FLAGS[*]}\` to main process..."
+                echo "X11 socket is not available, using Wayland + Xvfb..."
+                exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+              else
+                echo "Neither X11 nor Wayland sockets are available."
+              fi
             else
+              echo "Pass \`${FLAGS[*]}\` to main process..."
               exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             fi
         dest-filename: qq.sh
