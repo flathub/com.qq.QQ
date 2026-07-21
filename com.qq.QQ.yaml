@@ -103,14 +103,20 @@ modules:
               readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
             else
               echo "Adding default flags..."
-              FLAGS+=(--ozone-platform-hint=auto --enable-wayland-ime --wayland-text-input-version=3)
+              FLAGS+=(--enable-wayland-ime --wayland-text-input-version=3)
             fi
-          - echo "Pass \`${FLAGS[*]}\` to main process..."
           - |
-            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ] && [ -n "$WAYLAND_DISPLAY" ]; then
-              echo "X11 socket is not available, using Wayland + Xvfb..."
-              exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ]; then
+              if [ -n "$WAYLAND_DISPLAY" ]; then
+                FLAGS+=(--ozone-platform=wayland)
+                echo "Pass \`${FLAGS[*]}\` to main process..."
+                echo "X11 socket is not available, using Wayland + Xvfb..."
+                exec xvfb-run zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
+              else
+                echo "Neither X11 nor Wayland sockets are available."
+              fi
             else
+              echo "Pass \`${FLAGS[*]}\` to main process..."
               exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
             fi
         dest-filename: qq.sh
@@ -134,9 +140,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.31/release/00e6a3e7/QQ_3.2.29_260528_amd64_01.deb
-        sha256: 1e3828079673c94994bc0f4780d5d8528647639920659862d49d1c2f2a198e25
-        size: 182597964
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_amd64_01.deb
+        sha256: 02f677feb1ce01ed293a3c7761e5dd85bd79936f57dcaa4cdb53178ae30e3d6d
+        size: 182675698
         x-checker-data:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
@@ -148,9 +154,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.31/release/00e6a3e7/QQ_3.2.29_260528_arm64_01.deb
-        sha256: 5bcd8ccda401fbfa1821a7c3c758f84a253c317568f0b9c2d74426a24749e9a6
-        size: 201728544
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_arm64_01.deb
+        sha256: ac604371f5c486acf6cbf83dd667e622ee1f487d0c8bd425627de6d68fe34974
+        size: 202282552
         x-checker-data:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
