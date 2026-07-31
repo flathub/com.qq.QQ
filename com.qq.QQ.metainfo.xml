@@ -10,7 +10,6 @@
   <url type="homepage">https://im.qq.com</url>
   <url type="help">https://kf.qq.com/product/QQ.html</url>
   <description>
-    <p>**NOTE: This wrapper is not verified by, affiliated with, or supported by Tencent.**</p>
     <p>Tencent QQ (Chinese: 腾讯QQ), also known as QQ, is an instant messaging software service 
     and web portal developed by the Chinese technology company Tencent.</p>
   </description>
@@ -26,6 +25,9 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="3.2.31" date="2026-07-10"/>
+    <release version="3.2.29" date="2026-05-28"/>
+    <release version="3.2.28_260429" date="2026-04-29"/>
     <release version="3.2.27_260401" date="2026-04-01"/>
     <release version="3.2.26_260319" date="2026-03-19"/>
     <release version="3.2.26_260311" date="2026-03-11"/>
