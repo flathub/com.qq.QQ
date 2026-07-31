@@ -237,6 +237,23 @@ def copy_to_wayland(data: bytes, wl_type: str) -> bool:
         return False
 
 
+def clear_x_selection(selection: str, env: Dict[str, str]) -> None:
+    flag = {"clipboard": "--clipboard", "primary": "--primary"}.get(selection)
+    if not flag:
+        return
+    try:
+        subprocess.run(
+            ["xsel", flag, "--clear"],
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            check=True,
+            timeout=5,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as exc:
+        log(f"failed to clear X {selection}: {exc}", debug=True, enabled=True)
+
+
 def fingerprint(target: str, data: bytes) -> str:
     return hashlib.sha256(target.encode("utf-8") + b"\0" + data).hexdigest()
 
@@ -267,6 +284,7 @@ def handle_selection(
 
     if copy_to_wayland(payload, info.wl_type):
         last_marks[selection] = mark
+        clear_x_selection(selection, env)
         log(
             f"Wayland clipboard updated from {selection} ({info.category}) via '{info.wl_type}' ({len(payload)} bytes)",
             enabled=True,

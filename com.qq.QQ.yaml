@@ -134,6 +134,17 @@ modules:
       - type: file
         path: clipnotify.c
 
+  # https://github.com/kfish/xsel
+  - name: xsel
+    config-opts:
+      - --disable-static
+    sources:
+      - type: archive
+        url: https://github.com/kfish/xsel/archive/1.2.1.tar.gz
+        sha256: 18487761f5ca626a036d65ef2db8ad9923bf61685e06e7533676c56d7d60eb14
+    cleanup:
+      - /share/man
+
   - name: qq
     buildsystem: simple
     build-commands:
