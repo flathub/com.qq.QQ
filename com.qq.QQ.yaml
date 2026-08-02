@@ -154,9 +154,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/c97651b2/QQ_3.2.32_260730_arm64_01.deb
-        sha256: ecc02e27b0ae55aba721f0671d44a919c26643456674a1857a2d0cde806e0d7e
-        size: 204707692
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_arm64_01.deb
+        sha256: ac604371f5c486acf6cbf83dd667e622ee1f487d0c8bd425627de6d68fe34974
+        size: 202282552
         x-checker-data:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
