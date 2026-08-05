@@ -22,6 +22,7 @@ jobs:
 
       # https://github.com/awsl1414/aur-packages/blob/c425fe3e/.github/workflows/update-packages.yml
       - name: Resolve update domain via Chinese DNS
+        id: resolve
         run: |
           set -euo pipefail
           CHINA_SUBNET="118.134.175.0/24"
@@ -34,19 +35,34 @@ jobs:
             echo "ERROR: Failed to resolve $DOMAIN via Chinese DNS" >&2
             exit 1
           fi
-          echo "$IP $DOMAIN" | sudo tee -a /etc/hosts
+          echo "IP=$IP" >> "$GITHUB_OUTPUT"
+          echo "DOMAIN=$DOMAIN" >> "$GITHUB_OUTPUT"
           echo "Resolved $DOMAIN -> $IP"
 
-          echo "--- verification ---"
-          getent ahosts "$DOMAIN"
-
       - name: Run flatpak-external-data-checker
-        uses: docker://ghcr.io/flathub/flatpak-external-data-checker:latest
         env:
           GIT_AUTHOR_NAME: Flatpak External Data Checker
           GIT_COMMITTER_NAME: Flatpak External Data Checker
           GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: --update --never-fork --require-important-update com.qq.QQ.yaml
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --add-host "${{ steps.resolve.outputs.DOMAIN }}:${{ steps.resolve.outputs.IP }}" \
+            --workdir "$GITHUB_WORKSPACE" \
+            --volume "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE" \
+            --env GIT_AUTHOR_NAME \
+            --env GIT_COMMITTER_NAME \
+            --env GIT_AUTHOR_EMAIL \
+            --env GIT_COMMITTER_EMAIL \
+            --env GITHUB_TOKEN \
+            --env GITHUB_REPOSITORY \
+            --env GITHUB_RUN_ID \
+            --entrypoint bash \
+            ghcr.io/flathub/flatpak-external-data-checker:latest \
+            -c 'sed -i -e "s/^TIMEOUT_CONNECT = [0-9]*$/TIMEOUT_CONNECT = 120/" \
+                       -e "s/^TIMEOUT_TOTAL = [0-9]* \* [0-9]*$/TIMEOUT_TOTAL = 60 * 60/" \
+                       /app/src/lib/__init__.py && \
+                exec /app/flatpak-external-data-checker \
+                    --update --never-fork --require-important-update com.qq.QQ.yaml'
