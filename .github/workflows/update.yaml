@@ -28,11 +28,29 @@ jobs:
           CHINA_SUBNET="118.134.175.0/24"
           CHINA_DNS="119.29.29.29"
           DOMAIN="cdn-go.cn"
+          URL="https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
 
-          IP=$(dig @"$CHINA_DNS" "$DOMAIN" +subnet="$CHINA_SUBNET" +short \
-            | grep -E '^[0-9]' | head -1)
-          if [ -z "$IP" ]; then
+          IPS=$(dig @"$CHINA_DNS" "$DOMAIN" +subnet="$CHINA_SUBNET" +short \
+            | grep -E '^[0-9]' || true)
+          if [ -z "$IPS" ]; then
             echo "ERROR: Failed to resolve $DOMAIN via Chinese DNS" >&2
+            exit 1
+          fi
+
+          IP=""
+          for CANDIDATE in $IPS; do
+            echo "Testing $CANDIDATE ..."
+            if curl -sS -o /dev/null --connect-timeout 5 --max-time 10 \
+                --resolve "$DOMAIN:443:$CANDIDATE" "$URL"; then
+              IP="$CANDIDATE"
+              echo "OK: $CANDIDATE"
+              break
+            fi
+            echo "Failed: $CANDIDATE"
+          done
+
+          if [ -z "$IP" ]; then
+            echo "ERROR: No working IP found for $DOMAIN" >&2
             exit 1
           fi
           echo "IP=$IP" >> "$GITHUB_OUTPUT"
@@ -61,7 +79,7 @@ jobs:
             --env GITHUB_RUN_ID \
             --entrypoint bash \
             ghcr.io/flathub/flatpak-external-data-checker:latest \
-            -c 'sed -i -e "s/^TIMEOUT_CONNECT = [0-9]*$/TIMEOUT_CONNECT = 120/" \
+            -c 'sed -i -e "s/^TIMEOUT_CONNECT = [0-9]*$/TIMEOUT_CONNECT = 60 * 5/" \
                        -e "s/^TIMEOUT_TOTAL = [0-9]* \* [0-9]*$/TIMEOUT_TOTAL = 60 * 60/" \
                        /app/src/lib/__init__.py && \
                 exec /app/flatpak-external-data-checker \
