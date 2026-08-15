@@ -206,9 +206,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/c97651b2/QQ_3.2.32_260730_amd64_01.deb
-        sha256: 81ae2b8542ef5311fc72ecf53c9a523923c834569c7b0da52e0bf4360b9cb5f9
-        size: 184998970
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/3f89efc5/QQ_3.2.32_260812_amd64_01.deb
+        sha256: d085dd89397225061eb9f194308f688129818ed445777e97a4a0a16e13d7b0e8
+        size: 185828040
         x-checker-data:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
@@ -220,9 +220,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/c97651b2/QQ_3.2.32_260730_arm64_01.deb
-        sha256: ecc02e27b0ae55aba721f0671d44a919c26643456674a1857a2d0cde806e0d7e
-        size: 204707692
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/3f89efc5/QQ_3.2.32_260812_arm64_01.deb
+        sha256: 8796ccfd66acc025ef18db37185532d40bc8c58921e17da6d28c295acbcf8f92
+        size: 205524324
         x-checker-data:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json

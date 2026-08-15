@@ -1,0 +1,86 @@
+name: Update external data
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  flatpak-external-data-checker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.repository_owner == 'flathub'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dnsutils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dnsutils
+
+      # https://github.com/awsl1414/aur-packages/blob/c425fe3e/.github/workflows/update-packages.yml
+      - name: Resolve update domain via Chinese DNS
+        id: resolve
+        run: |
+          set -euo pipefail
+          CHINA_SUBNET="118.134.175.0/24"
+          CHINA_DNS="119.29.29.29"
+          DOMAIN="cdn-go.cn"
+          URL="https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
+
+          IPS=$(dig @"$CHINA_DNS" "$DOMAIN" +subnet="$CHINA_SUBNET" +short \
+            | grep -E '^[0-9]' || true)
+          if [ -z "$IPS" ]; then
+            echo "ERROR: Failed to resolve $DOMAIN via Chinese DNS" >&2
+            exit 1
+          fi
+
+          IP=""
+          for CANDIDATE in $IPS; do
+            echo "Testing $CANDIDATE ..."
+            if curl -sS -o /dev/null --connect-timeout 5 --max-time 10 \
+                --resolve "$DOMAIN:443:$CANDIDATE" "$URL"; then
+              IP="$CANDIDATE"
+              echo "OK: $CANDIDATE"
+              break
+            fi
+            echo "Failed: $CANDIDATE"
+          done
+
+          if [ -z "$IP" ]; then
+            echo "ERROR: No working IP found for $DOMAIN" >&2
+            exit 1
+          fi
+          echo "IP=$IP" >> "$GITHUB_OUTPUT"
+          echo "DOMAIN=$DOMAIN" >> "$GITHUB_OUTPUT"
+          echo "Resolved $DOMAIN -> $IP"
+
+      - name: Run flatpak-external-data-checker
+        env:
+          GIT_AUTHOR_NAME: Flatpak External Data Checker
+          GIT_COMMITTER_NAME: Flatpak External Data Checker
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --add-host "${{ steps.resolve.outputs.DOMAIN }}:${{ steps.resolve.outputs.IP }}" \
+            --workdir "$GITHUB_WORKSPACE" \
+            --volume "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE" \
+            --env GIT_AUTHOR_NAME \
+            --env GIT_COMMITTER_NAME \
+            --env GIT_AUTHOR_EMAIL \
+            --env GIT_COMMITTER_EMAIL \
+            --env GITHUB_TOKEN \
+            --env GITHUB_REPOSITORY \
+            --env GITHUB_RUN_ID \
+            --entrypoint bash \
+            ghcr.io/flathub/flatpak-external-data-checker:latest \
+            -c 'sed -i -e "s/^TIMEOUT_CONNECT = [0-9]*$/TIMEOUT_CONNECT = 60 * 5/" \
+                       -e "s/^TIMEOUT_TOTAL = [0-9]* \* [0-9]*$/TIMEOUT_TOTAL = 60 * 60/" \
+                       /app/src/lib/__init__.py && \
+                exec /app/flatpak-external-data-checker \
+                    --update --never-fork --require-important-update com.qq.QQ.yaml'
