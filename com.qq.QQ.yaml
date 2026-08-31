@@ -147,7 +147,7 @@ modules:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
           version-query: .Linux.version
-          url-query: .Linux.x64DownloadUrl.deb
+          url-query: .Linux.x64DownloadUrl.deb | sub("QQNTV2"; "QQNT")
           timestamp-query: .Linux.updateDate
           is-main-source: true
 
@@ -161,5 +161,5 @@ modules:
           type: json
           url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
           version-query: .Linux.version
-          url-query: .Linux.armDownloadUrl.deb
+          url-query: .Linux.armDownloadUrl.deb | sub("QQNTV2"; "QQNT")
           timestamp-query: .Linux.updateDate
