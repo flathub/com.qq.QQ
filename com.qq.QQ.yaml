@@ -140,26 +140,22 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/3f89efc5/QQ_3.2.32_260812_amd64_01.deb
-        sha256: d085dd89397225061eb9f194308f688129818ed445777e97a4a0a16e13d7b0e8
-        size: 185828040
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.35/beta/1763096b/linuxqq_3.2.33-52892_amd64.deb
+        sha256: 502a978f2d03af9f21acefc461f9d1d1fe09b65bad620bbfcdb589a79ac53b7e
+        size: 187398382
         x-checker-data:
-          type: json
-          url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
-          version-query: .Linux.version
-          url-query: .Linux.x64DownloadUrl.deb | sub("QQNTV2"; "QQNT")
-          timestamp-query: .Linux.updateDate
+          type: html
+          url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
+          pattern: (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_amd64\.deb)
           is-main-source: true
 
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/3f89efc5/QQ_3.2.32_260812_arm64_01.deb
-        sha256: 8796ccfd66acc025ef18db37185532d40bc8c58921e17da6d28c295acbcf8f92
-        size: 205524324
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.35/beta/1763096b/linuxqq_3.2.33-52892_arm64.deb
+        sha256: 806e036ee1c19ffeae22f19b5f0c2e1a7789abb5f4383bd67309995a73ea26de
+        size: 207755288
         x-checker-data:
-          type: json
-          url: https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json
-          version-query: .Linux.version
-          url-query: .Linux.armDownloadUrl.deb | sub("QQNTV2"; "QQNT")
-          timestamp-query: .Linux.updateDate
+          type: html
+          url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
+          pattern: (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_arm64\.deb)
