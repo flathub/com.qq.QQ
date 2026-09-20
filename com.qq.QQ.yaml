@@ -94,39 +94,13 @@ modules:
     sources:
       - type: script
         commands:
-          - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
-          - declare -a FLAGS
-          - |
-            if [[ -f "$XDG_CONFIG_HOME/qq-flags.conf" ]]
-            then
-              echo "Reading user defined flags from $XDG_CONFIG_HOME/qq-flags.conf..."
-              readarray -t FLAGS <"$XDG_CONFIG_HOME/qq-flags.conf"
-            else
-              echo "Adding default flags..."
-              FLAGS+=(--enable-wayland-ime --wayland-text-input-version=3)
-            fi
-          - |
-            if [ -z "$(ls -A /tmp/.X11-unix 2>/dev/null)" ]; then
-              if [ -n "$WAYLAND_DISPLAY" ]; then
-                FLAGS+=(--ozone-platform=wayland)
-                echo "Pass \`${FLAGS[*]}\` to main process..."
-                echo "X11 socket is not available, using Wayland + Xvfb..."
-                exec xvfb-run -a zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
-              else
-                echo "Neither X11 nor Wayland sockets are available."
-              fi
-            else
-              echo "Pass \`${FLAGS[*]}\` to main process..."
-              exec zypak-wrapper /app/extra/QQ/qq "${FLAGS[@]}" "$@"
-            fi
-        dest-filename: qq.sh
-
-      - type: script
-        commands:
           - bsdtar --to-stdout -xf qq.deb data.* | bsdtar -xf -
           - mv opt/QQ .
           - rm -rf qq.deb usr opt data.*
         dest-filename: apply_extra
+
+      - type: file
+        path: qq.sh
 
       - type: file
         path: com.qq.QQ.metainfo.xml
