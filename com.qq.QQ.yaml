@@ -114,9 +114,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.35/beta/1763096b/linuxqq_3.2.33-52892_amd64.deb
-        sha256: 502a978f2d03af9f21acefc461f9d1d1fe09b65bad620bbfcdb589a79ac53b7e
-        size: 187398382
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.36/beta/9ee04bef/linuxqq_3.2.34-53644_amd64.deb
+        sha256: 436c65e1dd28422e128a21cbddb5fe4e2e6c079d7f27fec2541e014d38cc336e
+        size: 187185496
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
@@ -126,9 +126,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.35/beta/1763096b/linuxqq_3.2.33-52892_arm64.deb
-        sha256: 806e036ee1c19ffeae22f19b5f0c2e1a7789abb5f4383bd67309995a73ea26de
-        size: 207755288
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.36/beta/9ee04bef/linuxqq_3.2.34-53644_arm64.deb
+        sha256: 181b895cb573548e396e54bb0548cca92ffdc1b1a4b018fa4551bb062385fdca
+        size: 207538924
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
