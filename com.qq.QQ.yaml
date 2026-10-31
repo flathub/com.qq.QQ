@@ -53,8 +53,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/OpenPrinting/cups.git
-        tag: v2.4.19
-        commit: 6ba0487abb05afc93d639f37676add8fd65d3756
+        tag: v2.4.20
+        commit: ef80eeaea51430a055948240eea3f28ef5354edf
         x-checker-data:
           type: git
           tag-pattern: ^v([\d.]+)$
@@ -116,9 +116,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.36/beta/9ee04bef/linuxqq_3.2.34-53644_amd64.deb
-        sha256: 436c65e1dd28422e128a21cbddb5fe4e2e6c079d7f27fec2541e014d38cc336e
-        size: 187185496
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_amd64.deb
+        sha256: 7de03862327abbd16da27130413698c9517782b27194afc593bc3abf9b55f9ac
+        size: 188287504
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
@@ -128,9 +128,9 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.36/beta/9ee04bef/linuxqq_3.2.34-53644_arm64.deb
-        sha256: 181b895cb573548e396e54bb0548cca92ffdc1b1a4b018fa4551bb062385fdca
-        size: 207538924
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_arm64.deb
+        sha256: 5f93ea62347dd772c7be4115413c95d2a60d189f3dd81bc194834bd4d7343cf2
+        size: 208717176
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
