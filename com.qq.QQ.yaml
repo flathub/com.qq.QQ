@@ -77,8 +77,7 @@ modules:
       - fc-cache -fsv ||:
     sources:
       - type: file
-        url: 
-          https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
+        url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
         sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
       - type: file
         path: patch/local.conf
@@ -117,26 +116,22 @@ modules:
       - type: extra-data
         filename: qq.deb
         only-arches: [x86_64]
-        url: 
-          https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_amd64.deb
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_amd64.deb
         sha256: 7de03862327abbd16da27130413698c9517782b27194afc593bc3abf9b55f9ac
         size: 188287504
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
-          pattern: 
-            (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_amd64\.deb)
+          pattern: (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_amd64\.deb)
           is-main-source: true
 
       - type: extra-data
         filename: qq.deb
         only-arches: [aarch64]
-        url: 
-          https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_arm64.deb
+        url: https://qqdl.gtimg.cn/qqfile/QQNT/9.9.37/beta/816b3c79/linuxqq_3.2.35-54395_arm64.deb
         sha256: 5f93ea62347dd772c7be4115413c95d2a60d189f3dd81bc194834bd4d7343cf2
         size: 208717176
         x-checker-data:
           type: html
           url: https://docs.qq.com/doc/DVXNoRlpKaWhEY015
-          pattern: 
-            (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_arm64\.deb)
+          pattern: (https://qqdl\.gtimg\.cn/qqfile/QQNT/[^/]+/beta/[^/]+/linuxqq_([^_]+)_arm64\.deb)
